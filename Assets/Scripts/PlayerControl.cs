@@ -34,6 +34,8 @@ public class PlayerControl : MonoBehaviour
     private Collider colli;
     private Transform camTransform;
 
+    public Vector3 Aim { get; private set; }
+
     private void Start()
     {
         camTransform = FindObjectOfType<Camera>().transform;
@@ -44,10 +46,14 @@ public class PlayerControl : MonoBehaviour
         nextState = State.idle;
         stateTime = 0f;
         rotation = transform.rotation;
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Aim = hit.point;
     }
 
     private void Update()
     {
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Aim = hit.point;
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
