@@ -23,6 +23,7 @@ public class PlayerRenderer : MonoBehaviour
     {
         animator.SetBool("walking", isWalking);
         animator.SetBool("landed", pControl.landed);
+        if (rangeAttack && IsPlaying("ArcherDraw")) rangeAttack = false;
         animator.SetBool("rangeAttack", rangeAttack);
 
         transform.rotation = Quaternion.Lerp(transform.rotation, pControl.rotation, Time.deltaTime * turnSpeed);
@@ -54,5 +55,19 @@ public class PlayerRenderer : MonoBehaviour
     public void Jump()
     {
         animator.SetTrigger("jump");
+    }
+
+    public bool IsPlaying(string name)
+    {
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.length > stateInfo.normalizedTime && stateInfo.IsName(name);
+    }
+
+    public bool IsAnyPlaying(params string[] names)
+    {
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        bool any = false;
+        for (int i = 0; i < names.Length && !any; i++) any = stateInfo.IsName(names[i]);
+        return stateInfo.length > stateInfo.normalizedTime && any;
     }
 }

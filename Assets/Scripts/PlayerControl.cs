@@ -10,11 +10,13 @@ public class PlayerControl : MonoBehaviour
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")] [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpAmount = 4f;
+    [SerializeField] private GameObject arrow;
 
     public enum State
     {
         none,
         idle,
+        attack,
         jump
     }
 
@@ -24,7 +26,7 @@ public class PlayerControl : MonoBehaviour
 
     public PlayerRenderer animator;
 
-    public bool landed = false, moving = false;
+    public bool landed = true, moving = false;
 
     //1회차 과제에서 공격 애니메이션을 추가하고 싶다면, 공격 중에는 animator.rangeAttack를 참으로 설정하거나, 공격 시작시 animator.MeleeAttack()을 호출하세요.
     //전자는 참일 동안 원거리 공격 애니메이션을, 후자는 호출 시 근거리 공격 애니메이션을 재생합니다.
@@ -35,6 +37,7 @@ public class PlayerControl : MonoBehaviour
     private Transform camTransform;
 
     public Vector3 Aim { get; private set; }
+    private bool shoot;
 
     private void Start()
     {
@@ -52,8 +55,6 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
-        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-        Aim = hit.point;
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
@@ -67,7 +68,11 @@ public class PlayerControl : MonoBehaviour
                 case State.idle:
                     if (landed)
                     {
-                        if (Input.GetKey(KeyCode.Space))
+                        if (Input.GetMouseButton(0))
+                        {
+                            nextState = State.attack;
+                        }
+                        else if (Input.GetKey(KeyCode.Space))
                         {
                             nextState = State.jump;
                         }
@@ -77,10 +82,16 @@ public class PlayerControl : MonoBehaviour
                 case State.jump:
                     if (landed) nextState = State.idle;
                     break;
-                //insert code here...
+                case State.attack:
+                    if (shoot && !animator.IsAnyPlaying("ArcherDraw", "ArcherAim", "ArcherRecoil"))
+                    {
+                        nextState = State.idle;
+                        shoot = false;
+                    }
+
+                    break;
             }
         }
-
 
         //2. 스테이트 초기화
         if (nextState != State.none)
@@ -95,15 +106,35 @@ public class PlayerControl : MonoBehaviour
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
-                //insert code here...
+                case State.attack:
+                    animator.rangeAttack = true;
+                    var diff = Aim - transform.position;
+                    diff.y = 0;
+                    rotation = Quaternion.LookRotation(diff);
+                    var euler = rotation.eulerAngles;
+                    euler.y += 90;
+                    rotation.eulerAngles = euler;
+                    rigid.velocity = Vector3.zero;
+                    moving = false;
+                    break;
             }
 
             stateTime = 0f;
         }
 
         //3. 글로벌 & 스테이트 업데이트
-        UpdateInput();
-        //insert code here...
+        if (state == State.attack)
+        {
+            if (!shoot && animator.IsPlaying("ArcherRecoil"))
+            {
+                shoot = true;
+                var dir = Aim - transform.position;
+                var projectile = Instantiate(arrow, transform.position,
+                    Quaternion.LookRotation(dir));
+                projectile.GetComponent<Rigidbody>().velocity = dir * 10;
+            }
+        }
+        else UpdateInput();
     }
 
     //땅에 닿았는지 여부를 확인하고 landed를 설정해주는 함수
@@ -119,6 +150,9 @@ public class PlayerControl : MonoBehaviour
     //WASD 인풋을 처리하는 함수
     private void UpdateInput()
     {
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Aim = hit.point;
+
         Vector3 move = Vector3.zero;
         moving = false;
         if (Input.GetKey(KeyCode.W))

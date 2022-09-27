@@ -44,12 +44,12 @@ public class CameraControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            panAngle += panSpeed * Time.deltaTime;
+            panAngle -= panSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            panAngle -= panSpeed * Time.deltaTime;
+            panAngle += panSpeed * Time.deltaTime;
         }
         // prevMousePos = mousePos;
         // mousePos = Input.mousePosition;

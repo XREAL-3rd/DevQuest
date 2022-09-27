@@ -6,7 +6,7 @@ public class Crosshair : MonoBehaviour
 {
     [SerializeField] private PlayerControl playerControl;
 
-    void Update()
+    void LateUpdate()
     {
         transform.position = Camera.main.WorldToScreenPoint(playerControl.Aim);
     }
