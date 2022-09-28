@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
+
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpAmount = 4f;
+
 
     public enum State {
         none,
@@ -47,7 +50,30 @@ public class PlayerControl : MonoBehaviour {
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
-        //insert code here...
+		//insert code here...
+
+		if (Input.GetMouseButtonDown(0))
+		{
+            RaycastHit hit;
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                //sphere.transform.position = hit.point;
+
+                if (hit.transform.gameObject.CompareTag("Target"))
+				{
+                    Transform hpbar = hit.transform.GetChild(0).GetChild(0);
+                    hpbar.gameObject.SetActive(true);
+                    hpbar.GetComponent<Slider>().value -= 0.4f;
+                    if (hpbar.GetComponent<Slider>().value <= 0) Destroy(hit.transform.gameObject);
+                }
+                else if (hit.transform.gameObject.CompareTag("Barrel"))
+                {
+                    Destroy(hit.transform.gameObject);
+                }
+            }
+        }
 
         //1. 스테이트 전환 상황 판단
         if (nextState == State.none) {
