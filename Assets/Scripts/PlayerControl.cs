@@ -59,11 +59,12 @@ public class PlayerControl : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit))
             {
-                Instantiate(particle, hit.transform.position, Quaternion.identity);
+
+                Instantiate(particle, hit.point, Quaternion.identity);
                 if (hit.transform.gameObject.CompareTag("Target"))
                 {
                     Vector3 shoot = hit.point - this.transform.position;
-                    hit.transform.gameObject.GetComponent<Target>().attack(120, shoot);
+                    hit.transform.gameObject.GetComponent<Target>().attack(200, shoot);
                 }
             }
         }
