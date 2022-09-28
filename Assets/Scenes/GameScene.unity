@@ -5128,7 +5128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196318, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_TagString
-      value: Barrel
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 452992, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_RootOrder
@@ -5182,6 +5182,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4324639581767490475, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -5225,7 +5233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196318, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_TagString
-      value: Barrel
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 452992, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_RootOrder
@@ -5276,6 +5284,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 600486626747660279, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -5807,7 +5823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196318, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_TagString
-      value: Barrel
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 452992, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_RootOrder
@@ -5861,6 +5877,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4324639581767490475, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -5904,7 +5928,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196318, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_TagString
-      value: Barrel
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 452992, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_RootOrder
@@ -5958,6 +5982,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
 --- !u!1001 &1173809437
@@ -5973,7 +6005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196318, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_TagString
-      value: Barrel
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 452992, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_RootOrder
@@ -6024,6 +6056,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 600486626747660279, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1036098537216828717, guid: bd0681bf08f5abb40b50c57331267663, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}

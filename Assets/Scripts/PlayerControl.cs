@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
+    public GameObject particle;
 
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
@@ -55,22 +55,15 @@ public class PlayerControl : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0))
 		{
             RaycastHit hit;
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
             {
-                //sphere.transform.position = hit.point;
-
+                Instantiate(particle, hit.transform.position, Quaternion.identity);
                 if (hit.transform.gameObject.CompareTag("Target"))
-				{
-                    Transform hpbar = hit.transform.GetChild(0).GetChild(0);
-                    hpbar.gameObject.SetActive(true);
-                    hpbar.GetComponent<Slider>().value -= 0.4f;
-                    if (hpbar.GetComponent<Slider>().value <= 0) Destroy(hit.transform.gameObject);
-                }
-                else if (hit.transform.gameObject.CompareTag("Barrel"))
                 {
-                    Destroy(hit.transform.gameObject);
+                    Vector3 shoot = hit.point - this.transform.position;
+                    hit.transform.gameObject.GetComponent<Target>().attack(120, shoot);
                 }
             }
         }
