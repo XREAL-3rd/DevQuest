@@ -20,6 +20,7 @@ public class CamFollow : MonoBehaviour
     public Transform savedAim;
 
     public GameObject Bullet;
+    public GameObject FakeBullet;
     public Transform FirePos;
 
     // Start is called before the first frame update
@@ -52,6 +53,7 @@ public class CamFollow : MonoBehaviour
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        // 클릭을 하면 발사
         if (Input.GetMouseButtonDown(0))
         {
             if (aimed && cur < waiting)
@@ -59,6 +61,14 @@ public class CamFollow : MonoBehaviour
                 Debug.Log("발사\n");
                 //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
                 GameObject tempBullet = Instantiate(Bullet, FirePos.transform.position, FirePos.transform.rotation);
+                //3초 뒤에 삭제
+                Destroy(tempBullet, 3.0f);
+            }
+            else
+            {
+                Debug.Log("허공발사\n");
+                //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
+                GameObject tempBullet = Instantiate(FakeBullet, FirePos.transform.position, FirePos.transform.rotation);
                 //3초 뒤에 삭제
                 Destroy(tempBullet, 3.0f);
             }
