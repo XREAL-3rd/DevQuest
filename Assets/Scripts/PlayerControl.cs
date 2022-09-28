@@ -54,17 +54,21 @@ public class PlayerControl : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown(0))
 		{
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
+            RaycastHit poshit;
+            Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(posray, out poshit))
             {
+                Ray shootray = new Ray(transform.position, poshit.point - transform.position);
 
-                Instantiate(particle, hit.point, Quaternion.identity);
-                if (hit.transform.gameObject.CompareTag("Target"))
+                RaycastHit hit;
+                if(Physics.Raycast(shootray, out hit))
                 {
-                    Vector3 shoot = hit.point - this.transform.position;
-                    hit.transform.gameObject.GetComponent<Target>().attack(200, shoot);
+                    Instantiate(particle, hit.point, Quaternion.identity);
+                    if (hit.transform.gameObject.CompareTag("Target"))
+                    {
+                        Vector3 shoot = hit.point - this.transform.position;
+                        hit.transform.gameObject.GetComponent<Target>().attack(80, shoot);
+                    }
                 }
             }
         }
