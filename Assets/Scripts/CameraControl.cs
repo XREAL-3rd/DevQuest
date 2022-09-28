@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*setting camera for Tracking player's angle and transform */
 public class CameraControl : MonoBehaviour {
     [Header("Settings")]
     public float distance = 5f;
