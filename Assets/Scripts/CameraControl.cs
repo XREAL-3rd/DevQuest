@@ -13,7 +13,7 @@ public class CameraControl : MonoBehaviour {
 
     private void Start() {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        transform.forward = player.transform.position - transform.position;
+        transform.forward = player.position - transform.position;
         panAngle = transform.rotation.eulerAngles.y;
     }
 

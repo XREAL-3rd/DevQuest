@@ -47,4 +47,8 @@ public class PlayerRenderer : MonoBehaviour {
     public void Jump() {
         animator.SetTrigger("jump");
     }
+
+    public void Shoot() {
+        animator.SetTrigger("rangeAttack");
+    }
 }
