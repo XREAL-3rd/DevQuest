@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
-    public GameObject particle;
+    public GameObject clickparticle;
+    public GameObject shootparticle;
+    public GameObject bullet;
 
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
@@ -56,6 +58,7 @@ public class PlayerControl : MonoBehaviour {
 		{
             RaycastHit poshit;
             Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            animator.MeleeAttack();
             if (Physics.Raycast(posray, out poshit))
             {
                 Ray shootray = new Ray(transform.position, poshit.point - transform.position);
@@ -63,7 +66,15 @@ public class PlayerControl : MonoBehaviour {
                 RaycastHit hit;
                 if(Physics.Raycast(shootray, out hit))
                 {
-                    Instantiate(particle, hit.point, Quaternion.identity);
+                    Instantiate(clickparticle, hit.point, Quaternion.identity);
+
+                    var emission = bullet.GetComponent<ParticleSystem>().emission;
+                    emission.rateOverDistance = 1f;
+                    bullet.transform.SetParent(null);
+                    bullet.transform.position = hit.point;
+                    Destroy(bullet, 1.0f);
+                    bullet = Instantiate(shootparticle, this.transform.position, Quaternion.identity, this.transform);
+
                     if (hit.transform.gameObject.CompareTag("Target"))
                     {
                         Vector3 shoot = hit.point - this.transform.position;
@@ -71,6 +82,7 @@ public class PlayerControl : MonoBehaviour {
                     }
                 }
             }
+            
         }
 
         //1. 스테이트 전환 상황 판단
