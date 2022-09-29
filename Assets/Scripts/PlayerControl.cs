@@ -2,132 +2,202 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour {
+public class PlayerControl : MonoBehaviour
+{
     private static float HEIGHT = 2f;
-    //°£´ÜÇÑ fsm state¹æ½ÄÀ¸·Î µ¿ÀÛÇÏ´Â Player ControllerÀÔ´Ï´Ù. Fsm state machine¿¡ ´ëÇÑ ´õ ÀÚ¼¼ÇÑ ³»¿ëÀº ¼¼¼Ç 3È¸Â÷¿¡¼­ ¹è¿ï °ÍÀÔ´Ï´Ù!
-    //Áö±İÀº state°¡ 3°³»ÓÀÌÁö¸¸ 3È¸Â÷ ¼¼¼Ç¿¡¼­ Á÷Á¢ state¸¦ ´õ Ãß°¡ÇÏ´Â °úÁ¦°¡ ³ª°¥ ¿¹Á¤ÀÔ´Ï´Ù.
-    [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpAmount = 4f;
 
-    public enum State {
+    //ê°„ë‹¨í•œ fsm stateë°©ì‹ìœ¼ë¡œ ë™ì‘í•˜ëŠ” Player Controllerì…ë‹ˆë‹¤. Fsm state machineì— ëŒ€í•œ ë” ìì„¸í•œ ë‚´ìš©ì€ ì„¸ì…˜ 3íšŒì°¨ì—ì„œ ë°°ìš¸ ê²ƒì…ë‹ˆë‹¤!
+    //ì§€ê¸ˆì€ stateê°€ 3ê°œë¿ì´ì§€ë§Œ 3íšŒì°¨ ì„¸ì…˜ì—ì„œ ì§ì ‘ stateë¥¼ ë” ì¶”ê°€í•˜ëŠ” ê³¼ì œê°€ ë‚˜ê°ˆ ì˜ˆì •ì…ë‹ˆë‹¤.
+    [Header("Settings")] [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpAmount = 4f;
+    [SerializeField] private GameObject arrow;
+
+    public enum State
+    {
         none,
         idle,
+        attack,
         jump
     }
 
-    [Header("Debug")]
-    public State state = State.none;
+    [Header("Debug")] public State state = State.none;
     public State nextState = State.none;
     private float stateTime;
 
     public PlayerRenderer animator;
 
-    public bool landed = false, moving = false;
-    //1È¸Â÷ °úÁ¦¿¡¼­ °ø°İ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Ãß°¡ÇÏ°í ½Í´Ù¸é, °ø°İ Áß¿¡´Â animator.rangeAttack¸¦ ÂüÀ¸·Î ¼³Á¤ÇÏ°Å³ª, °ø°İ ½ÃÀÛ½Ã animator.MeleeAttack()À» È£ÃâÇÏ¼¼¿ä.
-    //ÀüÀÚ´Â ÂüÀÏ µ¿¾È ¿ø°Å¸® °ø°İ ¾Ö´Ï¸ŞÀÌ¼ÇÀ», ÈÄÀÚ´Â È£Ãâ ½Ã ±Ù°Å¸® °ø°İ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÕ´Ï´Ù.
-    //±¸Çö ÀÚÃ¼´Â PlayerRenderer.cs¸¦ ÂüÁ¶ÇÏ¼¼¿ä.
+    public bool landed = true, moving = false;
+
+    //1íšŒì°¨ ê³¼ì œì—ì„œ ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì„ ì¶”ê°€í•˜ê³  ì‹¶ë‹¤ë©´, ê³µê²© ì¤‘ì—ëŠ” animator.rangeAttackë¥¼ ì°¸ìœ¼ë¡œ ì„¤ì •í•˜ê±°ë‚˜, ê³µê²© ì‹œì‘ì‹œ animator.MeleeAttack()ì„ í˜¸ì¶œí•˜ì„¸ìš”.
+    //ì „ìëŠ” ì°¸ì¼ ë™ì•ˆ ì›ê±°ë¦¬ ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì„, í›„ìëŠ” í˜¸ì¶œ ì‹œ ê·¼ê±°ë¦¬ ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•©ë‹ˆë‹¤.
+    //êµ¬í˜„ ìì²´ëŠ” PlayerRenderer.csë¥¼ ì°¸ì¡°í•˜ì„¸ìš”.
     public Quaternion rotation = Quaternion.identity;
     private Rigidbody rigid;
-    private Collider col;
-    private Transform camt;
+    private Collider colli;
+    private Transform camTransform;
 
-    private void Start() {
-        camt = FindObjectOfType<Camera>().transform;
+    public Vector3 Aim { get; private set; }
+    private bool shoot;
+
+    private void Start()
+    {
+        camTransform = FindObjectOfType<Camera>().transform;
         rigid = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
+        colli = GetComponent<Collider>();
 
         state = State.none;
         nextState = State.idle;
         stateTime = 0f;
         rotation = transform.rotation;
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Aim = hit.point;
     }
 
-    private void Update() {
-        //0. ±Û·Î¹ú »óÈ² ÆÇ´Ü
+    private void Update()
+    {
+        //0. ê¸€ë¡œë²Œ ìƒí™© íŒë‹¨
         stateTime += Time.deltaTime;
         CheckLanded();
         //insert code here...
 
-        //1. ½ºÅ×ÀÌÆ® ÀüÈ¯ »óÈ² ÆÇ´Ü
-        if (nextState == State.none) {
-            switch (state) {
+        //1. ìŠ¤í…Œì´íŠ¸ ì „í™˜ ìƒí™© íŒë‹¨
+        if (nextState == State.none)
+        {
+            switch (state)
+            {
                 case State.idle:
-                    if (landed) {
-                        if (Input.GetKey(KeyCode.Space)) {
+                    if (landed)
+                    {
+                        if (Input.GetMouseButton(0))
+                        {
+                            nextState = State.attack;
+                        }
+                        else if (Input.GetKey(KeyCode.Space))
+                        {
                             nextState = State.jump;
                         }
                     }
+
                     break;
                 case State.jump:
                     if (landed) nextState = State.idle;
                     break;
-                //insert code here...
+                case State.attack:
+                    if (shoot && !animator.IsAnyPlaying("ArcherDraw", "ArcherAim", "ArcherRecoil"))
+                    {
+                        nextState = State.idle;
+                        shoot = false;
+                    }
+
+                    break;
             }
         }
 
-
-        //2. ½ºÅ×ÀÌÆ® ÃÊ±âÈ­
-        if (nextState != State.none) {
+        //2. ìŠ¤í…Œì´íŠ¸ ì´ˆê¸°í™”
+        if (nextState != State.none)
+        {
             state = nextState;
             nextState = State.none;
-            switch (state) {
+            switch (state)
+            {
                 case State.jump:
                     Vector3 vel = rigid.velocity;
                     vel.y = jumpAmount;
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
-                //insert code here...
+                case State.attack:
+                    animator.rangeAttack = true;
+                    var diff = Aim - transform.position;
+                    diff.y = 0;
+                    rotation = Quaternion.LookRotation(diff);
+                    var euler = rotation.eulerAngles;
+                    euler.y += 90;
+                    rotation.eulerAngles = euler;
+                    rigid.velocity = Vector3.zero;
+                    moving = false;
+                    break;
             }
+
             stateTime = 0f;
         }
 
-        //3. ±Û·Î¹ú & ½ºÅ×ÀÌÆ® ¾÷µ¥ÀÌÆ®
-        UpdateInput();
-        //insert code here...
+        //3. ê¸€ë¡œë²Œ & ìŠ¤í…Œì´íŠ¸ ì—…ë°ì´íŠ¸
+        if (state == State.attack)
+        {
+            if (!shoot && animator.IsPlaying("ArcherRecoil"))
+            {
+                shoot = true;
+                var dir = Aim - transform.position;
+                var projectile = Instantiate(arrow, transform.position,
+                    Quaternion.LookRotation(dir));
+                projectile.GetComponent<Rigidbody>().velocity = dir * 10;
+            }
+        }
+        else UpdateInput();
     }
 
-    //¶¥¿¡ ´ê¾Ò´ÂÁö ¿©ºÎ¸¦ È®ÀÎÇÏ°í landed¸¦ ¼³Á¤ÇØÁÖ´Â ÇÔ¼ö
-    private void CheckLanded() {
-        //¹ß À§Ä¡¿¡ ÀÛÀº ±¸¸¦ ÇÏ³ª »ı¼º¿¡ ±× ±¸¿¡ ¶¥ÀÌ ´ê´ÂÁö °Ë»çÇÑ´Ù.
-        //1 << 6Àº GroundÀÇ ·¹ÀÌ¾î°¡ 6ÀÌ±â ¶§¹®.
-        landed = Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
+    //ë•…ì— ë‹¿ì•˜ëŠ”ì§€ ì—¬ë¶€ë¥¼ í™•ì¸í•˜ê³  landedë¥¼ ì„¤ì •í•´ì£¼ëŠ” í•¨ìˆ˜
+    private void CheckLanded()
+    {
+        //ë°œ ìœ„ì¹˜ì— ì‘ì€ êµ¬ë¥¼ í•˜ë‚˜ ìƒì„±ì— ê·¸ êµ¬ì— ë•…ì´ ë‹¿ëŠ”ì§€ ê²€ì‚¬í•œë‹¤.
+        //1 << 6ì€ Groundì˜ ë ˆì´ì–´ê°€ 6ì´ê¸° ë•Œë¬¸.
+        landed = Physics.CheckSphere(
+            new Vector3(colli.bounds.center.x, colli.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f),
+                colli.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
     }
 
-    //WASD ÀÎÇ²À» Ã³¸®ÇÏ´Â ÇÔ¼ö
-    private void UpdateInput() {
+    //WASD ì¸í’‹ì„ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
+    private void UpdateInput()
+    {
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Aim = hit.point;
+
         Vector3 move = Vector3.zero;
         moving = false;
-        if (Input.GetKey(KeyCode.W)) {
+        if (Input.GetKey(KeyCode.W))
+        {
             move += ForwardVector() * 1;
         }
-        if (Input.GetKey(KeyCode.S)) {
+
+        if (Input.GetKey(KeyCode.S))
+        {
             move += ForwardVector() * -1;
         }
-        if (Input.GetKey(KeyCode.D)) {
+
+        if (Input.GetKey(KeyCode.D))
+        {
             move += RightVector() * 1;
         }
-        if (Input.GetKey(KeyCode.A)) {
+
+        if (Input.GetKey(KeyCode.A))
+        {
             move += RightVector() * -1;
         }
-        if (move.x != 0 || move.z != 0) {
+
+        if (move.x != 0 || move.z != 0)
+        {
             rotation = Quaternion.LookRotation(move);
             moving = true;
         }
-        rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
+
+        var vel = moveSpeed * move.normalized;
+        vel.y = rigid.velocity.y;
+        rigid.velocity = vel;
     }
 
-    //Ä«¸Ş¶ó ±âÁØÀ¸·Î ¾Õ°ú ¿ìÃø º¤ÅÍ¸¦ °è»êÇØÁÖ´Â ÇÔ¼ö
-    private Vector3 ForwardVector() {
-        Vector3 v = camt.forward;
+    //ì¹´ë©”ë¼ ê¸°ì¤€ìœ¼ë¡œ ì•ê³¼ ìš°ì¸¡ ë²¡í„°ë¥¼ ê³„ì‚°í•´ì£¼ëŠ” í•¨ìˆ˜
+    private Vector3 ForwardVector()
+    {
+        Vector3 v = camTransform.forward;
         v.y = 0;
         v.Normalize();
         return v;
     }
 
-    private Vector3 RightVector() {
-        Vector3 v = camt.right;
+    private Vector3 RightVector()
+    {
+        Vector3 v = camTransform.right;
         v.y = 0;
         v.Normalize();
         return v;
