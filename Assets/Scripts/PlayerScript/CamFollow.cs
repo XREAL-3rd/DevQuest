@@ -56,23 +56,33 @@ public class CamFollow : MonoBehaviour
         // 클릭을 하면 발사
         if (Input.GetMouseButtonDown(0))
         {
-            if (aimed && cur < waiting)
+            if (!GameControl.main.player.IsBullet())
             {
-                Debug.Log("발사\n");
-                //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
-                GameObject tempBullet = Instantiate(Bullet, FirePos.transform.position, FirePos.transform.rotation);
-                //3초 뒤에 삭제
-                Destroy(tempBullet, 3.0f);
+                Debug.Log("총알 없어!!!\n");
             }
             else
             {
-                Debug.Log("허공발사\n");
-                //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
-                GameObject tempBullet = Instantiate(FakeBullet, FirePos.transform.position, FirePos.transform.rotation);
-                //3초 뒤에 삭제
-                Destroy(tempBullet, 3.0f);
+                if (aimed && cur < waiting)
+                {
+                    Debug.Log("발사\n");
+                    //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
+                    GameObject tempBullet = Instantiate(Bullet, FirePos.transform.position, FirePos.transform.rotation);
+                    //3초 뒤에 삭제
+                    Destroy(tempBullet, 2.0f);
+                    GameControl.main.player.Decr();
+                }
+                else
+                {
+                    Debug.Log("허공발사\n");
+                    //'Bullet'을 'FirePos.transform.position' 위치에 'FirePos.transform.rotation' 회전값으로 복제한다.         
+                    GameObject tempBullet = Instantiate(FakeBullet, FirePos.transform.position, FirePos.transform.rotation);
+                    //3초 뒤에 삭제
+                    Destroy(tempBullet, 2.0f);
+                    GameControl.main.player.Decr();
+                }
             }
-            savedAim.gameObject.GetComponent<Aim>().changeInit();
+            if (savedAim)
+                savedAim.gameObject.GetComponent<Aim>().changeInit();
             aimed = false;
         }
         if(cur >= waiting)
@@ -88,9 +98,14 @@ public class CamFollow : MonoBehaviour
             tempAim = hit.transform;
             if (tempAim.gameObject.tag == "WoodAim")
             {
-                savedAim = tempAim;
                 if (!aimed)
                 {
+                    if (savedAim)
+                    {
+                        savedAim.gameObject.GetComponent<Aim>().changeInit();
+                    }
+                    savedAim = tempAim;
+
                     Debug.Log("조준\n");
                     Gun.Aim(savedAim.position);
                     savedAim.gameObject.GetComponent<Aim>().changeRed();

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 455776247371585959}
   - component: {fileID: 455776247371585958}
   - component: {fileID: 455776247371585977}
-  - component: {fileID: 455776247371585976}
   - component: {fileID: 4804226347006334557}
+  - component: {fileID: 6421703886670251641}
+  - component: {fileID: 5612898670724405277}
   m_Layer: 0
   m_Name: Cylinder Aim
   m_TagString: WoodAim
@@ -86,20 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &455776247371585976
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455776247371585979}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &4804226347006334557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +103,35 @@ MonoBehaviour:
   sparkEffect: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
   spice: {fileID: 2100000, guid: d634f695d7fc3b2479eaec83bc044d20, type: 2}
   shingle: {fileID: 2100000, guid: aa92370f24b71d4428525f91cfb88005, type: 2}
+--- !u!54 &6421703886670251641
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455776247371585979}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 1
+--- !u!65 &5612898670724405277
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455776247371585979}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &3843725573938738047
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     Vector3 XDirection = new Vector3(1, 0, 0);
     Vector3 ZDirection = new Vector3(0, 0, 1);
     public Transform Cam;
+    public int Bullets = 10;
 
     static float moveSpeed = 30.0f;
     static float rotateSpeed = 60.0f;
@@ -68,5 +69,22 @@ public class Player : MonoBehaviour
         {
             this.transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
         }
+    }
+
+    public bool IsBullet()
+    {
+        if (Bullets > 0)
+            return true;
+        return false;
+    }
+
+    public void Incr(int num)
+    {
+        Bullets += num;
+    }
+
+    public void Decr()
+    {
+        Bullets--;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
-    private CamFollow camera;
+    [HideInInspector] public CamFollow cam;
     public Transform startFire;
     Vector3 bulletPosition;
     float moveSpeed = 50.0f;
@@ -12,10 +12,19 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        camera = GameObject.Find("Main Camera").GetComponent<CamFollow>();
+        cam = GameObject.Find("Main Camera").GetComponent<CamFollow>();
         bulletPosition = this.transform.position;
         myRigid = GetComponent<Rigidbody>();
-        dir = (camera.savedAim.position - camera.FirePos.position).normalized;
+        
+        // in case the savedAim destoryed right after the bullet created
+        if (cam.savedAim)
+        {
+            dir = (cam.savedAim.position - cam.FirePos.position).normalized;
+        }
+        else
+        {
+            dir = -this.transform.right;
+        }
     }
 
     void Update()

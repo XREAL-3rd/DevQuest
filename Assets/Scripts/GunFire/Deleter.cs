@@ -18,6 +18,10 @@ public class Deleter : MonoBehaviour
         if (saved.life < 1)
         {
             Debug.Log("destroyed\n");
+            if (GameControl.main.targetNum)
+            {
+                GameControl.main.targetNum.Decr();
+            }
             Destroy(aim);
         }
     }
