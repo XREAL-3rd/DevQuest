@@ -4,54 +4,59 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefaultNamespace
+public class Game : MonoBehaviour
 {
-    public class Game : MonoBehaviour
+    public static Game Instance { get; private set; }
+
+    [SerializeField] private Image WinUI;
+    private readonly HashSet<Target> targets = new HashSet<Target>();
+
+    private bool over;
+
+    public bool Over
     {
-        public static Game Instance { get; private set; }
-
-        [SerializeField] private Image WinUI;
-        private readonly HashSet<Target> targets = new HashSet<Target>();
-
-        private bool over;
-
-        public bool Over
+        get => over;
+        set
         {
-            get => over;
-            set
+            if (!over)
             {
-                if (!over)
-                {
-                    over = value;
-                    WinUI.gameObject.SetActive(true);
-                }
+                //종료시 UI 보여주기
+                over = value;
+                WinUI.gameObject.SetActive(true);
             }
         }
+    }
 
-        private void Awake()
+    Game()
+    {
+        //싱글톤
+        if (Instance != null && Instance != this)
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-
-            Instance = this;
-            WinUI.gameObject.SetActive(false);
+            Destroy(this);
         }
 
-        private void Start()
-        {
-            if (targets.Count == 0) Over = true;
-        }
+        Instance = this;
+    }
 
-        public void AddTarget(Target target)
-        {
-            targets.Add(target);
-        }
+    private void Awake()
+    {
+        WinUI.gameObject.SetActive(false);
+    }
 
-        public void RemoveTarget(Target target)
-        {
-            if (targets.Remove(target) && targets.Count == 0) Over = true;
-        }
+    private void Start()
+    {
+        if (targets.Count == 0) Over = true;
+    }
+
+    //Target 등록
+    public void AddTarget(Target target)
+    {
+        targets.Add(target);
+    }
+
+    //Target 등록 해제
+    public void RemoveTarget(Target target)
+    {
+        if (targets.Remove(target) && targets.Count == 0) Over = true;
     }
 }

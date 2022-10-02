@@ -11537,7 +11537,7 @@ MonoBehaviour:
   arrow: {fileID: 4546711469116751666, guid: d66470a298202964c8121a23bae79dd0, type: 3}
   state: 0
   nextState: 0
-  animator: {fileID: 0}
+  animator: {fileID: 714577803}
   landed: 1
   moving: 0
   rotation: {x: 0, y: 0, z: 0, w: 1}

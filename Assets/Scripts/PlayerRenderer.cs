@@ -56,17 +56,10 @@ public class PlayerRenderer : MonoBehaviour
         animator.SetTrigger("jump");
     }
 
+    //특정 이름을 가진 애니메이션 재생중인지 확인
     public bool IsPlaying(string name)
     {
         var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.length > stateInfo.normalizedTime && stateInfo.IsName(name);
-    }
-
-    public bool IsAnyPlaying(params string[] names)
-    {
-        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        bool any = false;
-        for (int i = 0; i < names.Length && !any; i++) any = stateInfo.IsName(names[i]);
-        return stateInfo.length > stateInfo.normalizedTime && any;
+        return stateInfo.normalizedTime >= 0 && stateInfo.IsName(name);
     }
 }
