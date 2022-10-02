@@ -15,13 +15,12 @@ public class GameControl : MonoBehaviour
 
     /// <summary>
     /// Add target object to list in game controller
-    /// ideal when the target is initialized (OnEnable)
+    /// ideal when the target is initialized (OnEnable, Awake, Start)
     /// </summary>
     /// <param name="target">target being added</param>
     public void AddTargetToList(Target target)
     {
         activeTargets.Add(target);
-        Debug.Log("target added");
     }
 
     /// <summary>

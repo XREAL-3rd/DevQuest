@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Target : MonoBehaviour
@@ -8,17 +9,23 @@ public class Target : MonoBehaviour
     private void OnEnable()
     {
         currentHealth = health;
-        GameControl.main.AddTargetToList(this);
+        StartCoroutine(WaitUntilGameControllerSet());
     }
 
     public void OnTargetHit(int damage)
     {
         currentHealth -= damage;
 
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
         {
             GameControl.main.DeleteTargetFromList(this);
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator WaitUntilGameControllerSet()
+    {
+        yield return new WaitUntil(() => GameControl.main != null);
+        GameControl.main.AddTargetToList(this);
     }
 }
