@@ -9,29 +9,29 @@ public class EdibleItemManager : MonoBehaviour
     public static EdibleItemManager main;
 
     public enum ItemType { Bottle, Box };
+    
     public List<EdibleItemData> items = new List<EdibleItemData>();
+    [SerializeField] private Transform playerTransform;
 
     private readonly List<GameObject> activeItems = new List<GameObject>();
-
-    [SerializeField] private Transform playerTransform;
 
     private void Awake()
     {
         main = this;
         
-        SpawnItem(ItemType.Bottle);
+        InitialSpawn();
     }
 
-    // private void InitialSpawn()
-    // {
-    //     for (int idx = 0; idx < items.Count; idx++)
-    //     {
-    //         for (int j = 0; j < 5; j++)
-    //         {
-    //             SpawnItem(idx);
-    //         }
-    //     }
-    // }
+    private void InitialSpawn()
+    {
+        for (int idx = 0; idx < items.Count; idx++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                SpawnItem((ItemType) idx);
+            }
+        }
+    }
 
     private void SpawnItem(ItemType type)
     {
