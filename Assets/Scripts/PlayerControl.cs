@@ -10,8 +10,7 @@ public class PlayerControl : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpAmount = 4f;
-
-    private float damage = 10f;
+    [SerializeField] private float damage = 10f;    
 
     public enum State {
         none,
@@ -123,12 +122,17 @@ public class PlayerControl : MonoBehaviour {
 
     void Shoot(){
 
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-
-
         RaycastHit hit;
         Ray aim;
         aim = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
+        
+        // 방향이 정확하지 않은 것 같음. 어떤 요소 가져와야 정확한 방향이 생성될지
+        Debug.Log(aim.direction);
+        projectile.GetComponent<Projectile>().SetUp(aim.direction);
+        projectile.GetComponent<Projectile>().Fire();
+
         if(Physics.Raycast(aim, out hit)){
             Debug.Log(hit.transform.name);
             Target target = hit.transform.GetComponent<Target>();
