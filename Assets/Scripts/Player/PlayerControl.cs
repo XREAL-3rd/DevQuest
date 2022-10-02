@@ -5,7 +5,7 @@ public class PlayerControl : MonoBehaviour
 {
     private static float HEIGHT = 2f;
 
-    [Header("Settings")] [SerializeField] private float moveSpeed = 5f;
+    [Header("Settings")] [SerializeField] public float moveSpeed = 5f;
     [SerializeField] private float jumpAmount = 4f;
 
     public enum State

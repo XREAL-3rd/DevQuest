@@ -53,7 +53,7 @@ public class EdibleItemManager : MonoBehaviour
         activeItems.Add(item);
     }
 
-    public void DeleteItemFromList(GameObject item)
+    public void OnItemEaten(GameObject item)
     {
         activeItems.Remove(item);
         
