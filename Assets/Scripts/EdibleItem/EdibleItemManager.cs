@@ -41,19 +41,20 @@ public class EdibleItemManager : MonoBehaviour
         Vector3 spawnPos = playerTransform.position - new Vector3(Mathf.Sin(angle), 0.1f, Mathf.Cos(angle)) * 10;
 
         var newItem = Instantiate(itemData.prefab);
-        newItem.transform.position = spawnPos;
-        newItem.transform.SetParent(GameObject.Find("EdibleItems").transform);
-        
+        newItem.gameObject.transform.position = spawnPos;
+        newItem.gameObject.transform.SetParent(GameObject.Find("EdibleItems").transform);
+        newItem.AddComponent<EdibleItem>().ItemData = items[(int) type];
+
         AddItemToList(newItem);
     }
 
-    public void AddItemToList(GameObject go)
+    public void AddItemToList(GameObject item)
     {
-        activeItems.Add(go);
+        activeItems.Add(item);
     }
 
-    public void DeleteItemFromList(GameObject go)
+    public void DeleteItemFromList(GameObject item)
     {
-        activeItems.Remove(go);
+        activeItems.Remove(item);
     }
 }

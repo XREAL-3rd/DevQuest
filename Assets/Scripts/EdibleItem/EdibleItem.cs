@@ -10,14 +10,12 @@ public class EdibleItem : MonoBehaviour
     {
         set { itemData = value; }
     }
-
-    public void WatchInfo()
-    {
-        Debug.Log(itemData.increasingSpeed);
-    }
-
+    
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collision Enter");
+        Instantiate(itemData.eatenEffect, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+
+        EdibleItemManager.main.DeleteItemFromList(gameObject);
     }
 }
