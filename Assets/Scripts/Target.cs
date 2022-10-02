@@ -4,24 +4,10 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public float target_health = 30f;
-
-    public bool actual_hit = false;
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    public float target_health = 10f; // Total health of the target.
+    
     public void GetHit(float damage)
     {
-        actual_hit = false;
         Debug.Log("Target Damanged");
         target_health -= damage;
         if (target_health <= 0f)
