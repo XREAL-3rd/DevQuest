@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -38,6 +39,12 @@ public class PlayerControl : MonoBehaviour
 
     public Vector3 Aim { get; private set; }
     private bool shoot;
+    public readonly ItemEffects itemEffects;
+
+    PlayerControl()
+    {
+        itemEffects = new ItemEffects(this);
+    }
 
     private void Start()
     {
@@ -85,6 +92,7 @@ public class PlayerControl : MonoBehaviour
                 case State.attack:
                     if (shoot && !animator.IsAnyPlaying("ArcherDraw", "ArcherAim", "ArcherRecoil"))
                     {
+                        animator.rangeAttack = false;
                         nextState = State.idle;
                         shoot = false;
                     }
@@ -102,7 +110,7 @@ public class PlayerControl : MonoBehaviour
             {
                 case State.jump:
                     Vector3 vel = rigid.velocity;
-                    vel.y = jumpAmount;
+                    vel.y = jumpAmount * itemEffects.JumpMul;
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
@@ -132,6 +140,7 @@ public class PlayerControl : MonoBehaviour
                 var projectile = Instantiate(arrow, transform.position,
                     Quaternion.LookRotation(dir));
                 projectile.GetComponent<Rigidbody>().velocity = dir * 10;
+                projectile.GetComponent<Projectile>().damage += itemEffects.AddDamage;
             }
         }
         else UpdateInput();
@@ -181,7 +190,7 @@ public class PlayerControl : MonoBehaviour
             moving = true;
         }
 
-        var vel = moveSpeed * move.normalized;
+        var vel = moveSpeed * itemEffects.Agility * move.normalized;
         vel.y = rigid.velocity.y;
         rigid.velocity = vel;
     }

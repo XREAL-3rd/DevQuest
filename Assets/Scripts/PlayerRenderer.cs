@@ -23,7 +23,6 @@ public class PlayerRenderer : MonoBehaviour
     {
         animator.SetBool("walking", isWalking);
         animator.SetBool("landed", pControl.landed);
-        if (rangeAttack && IsPlaying("ArcherDraw")) rangeAttack = false;
         animator.SetBool("rangeAttack", rangeAttack);
 
         transform.rotation = Quaternion.Lerp(transform.rotation, pControl.rotation, Time.deltaTime * turnSpeed);

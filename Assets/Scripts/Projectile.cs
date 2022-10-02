@@ -7,7 +7,7 @@ namespace DefaultNamespace
     public class Projectile : MonoBehaviour
     {
         [SerializeField] private float lifetime = 15;
-        [SerializeField] private float damage = 20;
+        [SerializeField] public float damage = 20;
         [SerializeField] private ParticleSystem hitVFX;
 
         private float time;
@@ -18,7 +18,7 @@ namespace DefaultNamespace
             if (target != null)
             {
                 Instantiate(hitVFX, transform.position, transform.rotation);
-                target.Damage(20);
+                target.Damage(damage);
             }
 
             Destroy(gameObject);
