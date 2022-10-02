@@ -10,7 +10,7 @@ public class Target : MonoBehaviour
         currentHealth = health;
     }
 
-    private void OnTargetHit(int damage)
+    public void OnTargetHit(int damage)
     {
         currentHealth -= damage;
         

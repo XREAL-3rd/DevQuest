@@ -24,5 +24,10 @@ public class Projectile : MonoBehaviour
         Physics.Raycast(ray, out hit);
 
         Instantiate(particle, hit.point, Quaternion.identity);
+
+        if (hit.collider.gameObject == GameObject.FindWithTag("Target"))
+        {
+            hit.collider.gameObject.GetComponent<Target>().OnTargetHit(20);
+        }
     }
 }

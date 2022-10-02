@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Target (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
+      propertyPath: m_TagString
+      value: Target
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 481e0348bef07404dab060ac016c2732, type: 3}
 --- !u!4 &50045480 stripped
@@ -5144,6 +5148,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Target (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
+      propertyPath: m_TagString
+      value: Target
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 481e0348bef07404dab060ac016c2732, type: 3}
 --- !u!4 &675046595 stripped
@@ -5579,6 +5587,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Target (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
+      propertyPath: m_TagString
+      value: Target
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 481e0348bef07404dab060ac016c2732, type: 3}
 --- !u!4 &1567825844 stripped
@@ -5709,6 +5721,10 @@ PrefabInstance:
     - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
       propertyPath: m_Name
       value: Target (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
+      propertyPath: m_TagString
+      value: Target
       objectReference: {fileID: 0}
     - target: {fileID: 7149235722097446340, guid: 481e0348bef07404dab060ac016c2732, type: 3}
       propertyPath: m_UseGravity
@@ -10870,6 +10886,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
       propertyPath: m_Name
+      value: Target
+      objectReference: {fileID: 0}
+    - target: {fileID: 3610096588486121765, guid: 481e0348bef07404dab060ac016c2732, type: 3}
+      propertyPath: m_TagString
       value: Target
       objectReference: {fileID: 0}
     m_RemovedComponents: []
