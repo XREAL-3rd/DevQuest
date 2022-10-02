@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
@@ -28,6 +27,8 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody rigid;
     private Collider col;
     private Transform camt;
+
+    public static event Action MouseClicked;
 
     private void Start()
     {
@@ -92,18 +93,7 @@ public class PlayerControl : MonoBehaviour
             SetAttack();
         }
     }
-
-    private void SetAttack()
-    {
-        RaycastHit hit;
-        var mousePosition = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-        Debug.Log(ray);
-
-        Physics.Raycast(ray, out hit);
-        Debug.Log(hit.point);
-    }
-
+    
     private void CheckLanded()
     {
         landed = Physics.CheckSphere(
@@ -143,8 +133,7 @@ public class PlayerControl : MonoBehaviour
 
         rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
     }
-
-    //ī�޶� �������� �հ� ���� ���͸� ������ִ� �Լ�
+    
     private Vector3 ForwardVector()
     {
         Vector3 v = camt.forward;
@@ -160,4 +149,10 @@ public class PlayerControl : MonoBehaviour
         v.Normalize();
         return v;
     }
+    
+    private void SetAttack()
+    {
+        MouseClicked?.Invoke();
+    }
+
 }
