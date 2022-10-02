@@ -8,6 +8,7 @@ public class EdibleItem : MonoBehaviour
     [SerializeField] private EdibleItemData itemData;
     public EdibleItemData ItemData
     {
+        get { return itemData; }
         set { itemData = value; }
     }
     

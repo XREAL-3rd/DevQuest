@@ -56,5 +56,7 @@ public class EdibleItemManager : MonoBehaviour
     public void DeleteItemFromList(GameObject item)
     {
         activeItems.Remove(item);
+        
+        SpawnItem((ItemType) System.Enum.Parse(typeof(ItemType), item.GetComponent<EdibleItem>().ItemData.name));
     }
 }
