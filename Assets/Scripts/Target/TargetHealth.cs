@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetHealth : MonoBehaviour {
-    public GameObject ExplosionEffect;
+    public GameObject ExplosionFx;
 
-    private int health = 10;
+    private float health = 100;
 
     private void Break() {
-        Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
+        Instantiate(ExplosionFx, transform.position, Quaternion.identity);
+        GameManager.TargetDestroyed(gameObject);
         Destroy(gameObject);
     }
 
-    public void GetNormalAttacked() {
-        health--;
+    public void GetNormalAttacked(float physicalDamage) {
+        health -= 1 * physicalDamage;
         if (health <= 0)
             Break();
     }
 
-    public void GetCriticalAttacked() {
-        health -= 3;
+    public void GetCriticalAttacked(float physicalDamage) {
+        health -= 3 * physicalDamage;
         if (health <= 0)
             Break();
     }
 
-    public void GetFireBallAttacked() {
-        health -= 2;
+    public void GetFireBallAttacked(float magicalDamage) {
+        health -= 2 * magicalDamage;
         if (health <= 0)
             Break();
     }
