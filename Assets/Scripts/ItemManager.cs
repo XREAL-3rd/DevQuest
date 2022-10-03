@@ -11,14 +11,10 @@ public class ItemManager : MonoBehaviour
 
     private GameObject playereffect;
 
-    private void Start()
-    {
-        Invoke("SpawnItemObject", 2.0f);
-    }
-
     void Awake()
     {
         main = this;
+        Invoke("SpawnItemObject", 2.0f);
     }
 
     public void SpawnItemObject()
