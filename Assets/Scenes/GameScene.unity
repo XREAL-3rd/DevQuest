@@ -5499,7 +5499,7 @@ MonoBehaviour:
   itemDatas:
   - {fileID: 11400000, guid: 700ca19b00a814a03901e5c328978bfe, type: 2}
   - {fileID: 11400000, guid: 7331918225f71497ca9d098be7657521, type: 2}
-  itemPrefab: {fileID: 1434627103891488, guid: 52d340ed9c2714c4f8aabf1f82df1b58, type: 3}
+  itemPrefab: {fileID: 7552429197263906875, guid: d9541903f1aa0402c9bf08410cfd994d, type: 3}
 --- !u!4 &1567023109 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8596069091599015453, guid: 173714a73f076a840b4f1ff8346c674b, type: 3}
@@ -5522,6 +5522,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 714577802}
     m_Modifications:
+    - target: {fileID: 424111961806514529, guid: dbd28e26685c8c84cba6814af11fb07a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 2582004771931365299, guid: dbd28e26685c8c84cba6814af11fb07a, type: 3}
       propertyPath: m_Name
       value: Character2_Erika
