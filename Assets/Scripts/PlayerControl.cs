@@ -11,8 +11,8 @@ public class PlayerControl : MonoBehaviour {
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpAmount = 4f;
+    [SerializeField] public float moveSpeed = 6f;
+    [SerializeField] public float jumpAmount = 8f;
 
 
     public enum State {

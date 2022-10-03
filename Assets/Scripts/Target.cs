@@ -16,6 +16,11 @@ public class Target : MonoBehaviour
 		hp -= (int)((float)damage / shoot.magnitude * 2*thrust);
 		hpbar.value = (float)hp/200;
 		rg.AddForce(shoot.normalized *(thrust / shoot.magnitude), ForceMode.Impulse);
-		if (hpbar.value <= 0) Destroy(this.gameObject);		
+		if (hpbar.value <= 0)
+		{
+			//EndingManager.targetlist.Remove(this);
+			EndingManager.main.removemsg();
+			Destroy(this.gameObject);
+		}
 	}
 }
