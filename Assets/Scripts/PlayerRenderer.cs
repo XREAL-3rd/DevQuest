@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerRenderer : MonoBehaviour {
     [Header("Preset Fields")]
     public PlayerControl pcon;
-    //public ParticleSystem walkParticle;
+    public ParticleSystem walkParticle;
     public Animator animator;
 
     [Header("Settings")]
@@ -28,14 +28,14 @@ public class PlayerRenderer : MonoBehaviour {
         if(pcon.landed && pcon.moving) {
             if (!isWalking) {
                 isWalking = true;
-               // walkParticle.time = 0f;
-                //walkParticle.Play();
+                walkParticle.time = 0f;
+                walkParticle.Play();
             }
         }
         else {
             if (isWalking) {
                 isWalking = false;
-               // walkParticle.Stop();
+                walkParticle.Stop();
             }
         }
     }

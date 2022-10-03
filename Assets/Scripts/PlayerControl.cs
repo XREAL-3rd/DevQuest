@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour {
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 20f;
+    public static float moveSpeed = 20f;
     [SerializeField] private float jumpAmount = 4f;
 
     public enum State {
@@ -22,9 +22,9 @@ public class PlayerControl : MonoBehaviour {
     private float stateTime;
 
     public PlayerRenderer animator;
-    public Animator anim;
 
     public bool landed = false, moving = false;
+    public Animator anim;
     //1회차 과제에서 공격 애니메이션을 추가하고 싶다면, 공격 중에는 animator.rangeAttack를 참으로 설정하거나, 공격 시작시 animator.MeleeAttack()을 호출하세요.
     //전자는 참일 동안 원거리 공격 애니메이션을, 후자는 호출 시 근거리 공격 애니메이션을 재생합니다.
     //구현 자체는 PlayerRenderer.cs를 참조하세요.
@@ -45,7 +45,6 @@ public class PlayerControl : MonoBehaviour {
     }
 
     private void Update() {
-
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
@@ -101,6 +100,7 @@ public class PlayerControl : MonoBehaviour {
     private void UpdateInput() {
         Vector3 move = Vector3.zero;
         moving = false;
+        anim.SetBool("moving", false);
         if (Input.GetKey(KeyCode.W)) {
             move += ForwardVector() * 1;
         }
@@ -115,12 +115,9 @@ public class PlayerControl : MonoBehaviour {
         }
         if (move.x != 0 || move.z != 0) {
             rotation = Quaternion.LookRotation(move);
-            moving = true; // 여기에서 animator를 move로 바꾸어주자
-            /* 애니메이션 바꾸기 */
-            anim.SetBool("walking", true);
-
+            moving = true;
+            anim.SetBool("moving",true);
         }
-
         rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
     }
 

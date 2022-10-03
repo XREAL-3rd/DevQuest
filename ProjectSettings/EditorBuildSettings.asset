@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/00_YJ/01_Scenes/HW01_YJ.unity
+    guid: a9247d8232644c943825a1e4e3ddbb5b
+  - enabled: 1
+    path: Assets/00_YJ/01_Scenes/HW01_YJ_GameOver.unity
+    guid: efc3d0d598d48bc49bd967b9f8394701
   m_configObjects: {}

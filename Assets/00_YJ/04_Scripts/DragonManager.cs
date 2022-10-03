@@ -8,6 +8,8 @@ public class DragonManager : MonoBehaviour
     public GameObject firePos;
     public GameObject prefabFire;
     private GameObject fire;
+    public static int shootCount=2;
+
 
     public AudioSource audioPlayer;
 
@@ -37,8 +39,8 @@ public class DragonManager : MonoBehaviour
                 dir = ray.direction; // dir에 담아주기
             }
 
-            fire = Instantiate(prefabFire); // 총알 만들고
-            fire.transform.position = firePos.transform.position; // 시작 위치 지정
+                fire = Instantiate(prefabFire); // 총알 만들고
+                fire.transform.position = firePos.transform.position; // 시작 위치 지정
 
         }
         
