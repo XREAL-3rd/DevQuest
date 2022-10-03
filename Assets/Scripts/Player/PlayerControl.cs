@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour {
 
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 20f;
-    [SerializeField] private float jumpAmount = 4f;
+    public static float jumpAmount = 4f;
 
     public enum State {
         none,
@@ -72,7 +72,7 @@ public class PlayerControl : MonoBehaviour {
                     Vector3 vel = rigid.velocity;
                     vel.y = jumpAmount;
                     rigid.velocity = vel;
-                    animator.Jump();
+                    //animator.Jump();
                     break;
                 //insert code here...
             }

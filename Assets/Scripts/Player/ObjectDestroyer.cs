@@ -5,13 +5,12 @@ make an effect orthogonally against plane */
 public class ObjectDestroyer : MonoBehaviour
 {
     public GameObject bulletEffect;
-    ParticleSystem ps1;
+    ParticleSystem ps;
     private RaycastHit hit;
-    int hp = 5;
 
     void Start()
     {
-       ps1 = bulletEffect.GetComponent<ParticleSystem>();
+       ps = bulletEffect.GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -26,7 +25,7 @@ public class ObjectDestroyer : MonoBehaviour
             if(Physics.Raycast(Camera.main.transform.position, direction, out hit, 100f))
             {
                 Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, 0.5f);
-                if(hit.collider.tag == "Target")
+               /* if(hit.collider.tag == "Target")
                     {
                         
                         hp -= 1;
@@ -36,6 +35,10 @@ public class ObjectDestroyer : MonoBehaviour
                         hp = 5;
                         }
                     }
+                    */
+                    if (hit.collider.tag == "Target"){
+                        hit.collider.GetComponent<TargetControl>().Hit(ray);
+                        }
             }
             else
             {
@@ -47,7 +50,7 @@ public class ObjectDestroyer : MonoBehaviour
                 bulletEffect.transform.position = hit.point;
                 bulletEffect.transform.forward = hit.normal; 
 
-                ps1.Play();
+                ps.Play();
             }
         }
     }
