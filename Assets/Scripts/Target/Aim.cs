@@ -9,10 +9,16 @@ public class Aim : MonoBehaviour
     public Material spice;
     public Material shingle;
     //private GameObject thisAim;
+    
+
     // Start is called before the first frame update
     void Start()
     {
         //thisAim = GetComponent<GameObject>();
+        if (GameControl.main.targetNum)
+        {
+            GameControl.main.targetNum.Incr();
+        }
     }
 
     // Update is called once per frame

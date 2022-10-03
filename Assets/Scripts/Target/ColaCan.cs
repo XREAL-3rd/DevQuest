@@ -36,8 +36,8 @@ public class ColaCan : MonoBehaviour
         Quaternion rot = Quaternion.FromToRotation(-Vector3.forward, contact.normal);
         GameObject spark = Instantiate(sparkEffect, contact.point, rot);
         spark.transform.SetParent(this.transform);
-        Destroy(spark, 1.0f);
         //¼Ò¸®
         audioSource.Play();
+        Destroy(spark, 1.0f);
     }
 }
