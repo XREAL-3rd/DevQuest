@@ -6939,8 +6939,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc136b457c6ae946a99ec657ebbdc03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemDatas: []
-  itemBox: {fileID: 0}
+  ItemDatas:
+  - {fileID: 11400000, guid: 726888c609c4b6a4e9d0114ecd0a06d2, type: 2}
+  - {fileID: 11400000, guid: 2af117243d7ead2448a36a26a323e7a7, type: 2}
+  itemBox: {fileID: 6126061240392456265, guid: b68045f0484cd5d498c13ee898a65525, type: 3}
+  player: {fileID: 2749362624247797110}
 --- !u!1 &1907801329 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 949053225108803074, guid: 8107547817d7ae84db316a65fa1da152, type: 3}
@@ -12235,7 +12238,7 @@ MonoBehaviour:
   clickparticle: {fileID: 7664444304159156059, guid: ab091c8cbdc4b474caebab6b843bf5e8, type: 3}
   shootparticle: {fileID: 1692517446758730, guid: 0faf45fa9fd417747a4881e92faf01f0, type: 3}
   bullet: {fileID: 1807158145}
-  moveSpeed: 6.5
+  moveSpeed: 6
   jumpAmount: 8
   state: 0
   nextState: 0

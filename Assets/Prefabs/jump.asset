@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ae0de71d5cc8b438a0cbbd4186410f, type: 3}
   m_Name: jump
   m_EditorClassIdentifier: 
-  jump: 12
-  deal: 5
+  jump: 14
+  speed: 6.5
+  effect: {fileID: 1844191813266838, guid: 06266f9b780d2a140bae45693f548c7c, type: 3}

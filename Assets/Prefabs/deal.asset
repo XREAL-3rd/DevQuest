@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: deal
   m_EditorClassIdentifier: 
   jump: 8
-  deal: 10
+  speed: 12
+  effect: {fileID: 1844191813266838, guid: 5c53f9686ad168343870118415c75706, type: 3}
