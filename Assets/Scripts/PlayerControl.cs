@@ -126,13 +126,16 @@ public class PlayerControl : MonoBehaviour {
         Ray aim;
         aim = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
+        var projectile_temp = Instantiate(projectilePrefab).GetComponent<Projectile>();
+        projectile_temp.SetUp(transform, transform.forward);
+        projectile_temp.Fire();
+        // GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
         
-        // 방향이 정확하지 않은 것 같음. 어떤 요소 가져와야 정확한 방향이 생성될지
-        Debug.Log(aim.direction);
-        projectile.GetComponent<Projectile>().SetUp(aim.direction);
-        projectile.GetComponent<Projectile>().Fire();
-
+        // // 방향이 정확하지 않은 것 같음. 어떤 요소 가져와야 정확한 방향이 생성될지
+        // Debug.Log(aim.direction);
+        // projectile.GetComponent<Projectile>().SetUp(transform.forward);
+        // projectile.GetComponent<Projectile>().Fire();
+        
         if(Physics.Raycast(aim, out hit)){
             Debug.Log(hit.transform.name);
             Target target = hit.transform.GetComponent<Target>();
