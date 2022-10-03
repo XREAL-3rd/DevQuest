@@ -12,7 +12,9 @@ public class Shooting : MonoBehaviour
     public GameObject arrow_hit_effect;
 
     public Animator animator;
-    
+
+    public bool shooting = false;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) 
