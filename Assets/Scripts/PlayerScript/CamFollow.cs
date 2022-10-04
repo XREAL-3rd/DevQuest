@@ -10,6 +10,7 @@ public class CamFollow : MonoBehaviour
     public float height = 0.2f;
     public float smoothRotate = 5.0f;
     private Transform tr;
+    public AudioSource audioSource;
 
     Ray ray;
     RaycastHit hit;
@@ -66,6 +67,7 @@ public class CamFollow : MonoBehaviour
             }
             else
             {
+                audioSource.Play();
                 if (aimed && cur < waiting)
                 {
                     Debug.Log("발사\n");

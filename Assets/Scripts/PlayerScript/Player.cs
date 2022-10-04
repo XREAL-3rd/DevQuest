@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public Transform FirePos;
     public GameObject FireEffect;
     public GameObject FakeBullet;
+    public AudioSource shotgun;
 
     void Start()
     {
@@ -172,6 +173,8 @@ public class Player : MonoBehaviour
             tempBullet.GetComponent<FakeBullet>().Boom();
             Destroy(tempBullet, 2.0f);
         }
+        Debug.Log("¹üÀÎ\n");
+        shotgun.Play();
         GameObject spark = Instantiate(FireEffect, FirePos.position, Quaternion.identity);
         spark.transform.SetParent(this.transform);
         Destroy(spark, 1.0f);
