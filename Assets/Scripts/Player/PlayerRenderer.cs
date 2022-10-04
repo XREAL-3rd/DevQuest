@@ -46,5 +46,11 @@ public class PlayerRenderer : MonoBehaviour {
 
     public void Jump() {
         animator.SetTrigger("jump");
+        animator.SetBool("crouch", false);
+    }
+
+    public void Crouch()
+    {
+        animator.SetBool("crouch", true);
     }
 }
