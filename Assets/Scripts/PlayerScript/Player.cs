@@ -6,31 +6,68 @@ public class Player : MonoBehaviour
 {
     Rigidbody myRigid;
 
+    enum State { Idle, Walk, Crawl };
+    State currState;
+    public bool rebounding = false;
+
     Vector3 playerPosition;
     Vector3 YDirection = new Vector3(0, 1, 0);
     Vector3 XDirection = new Vector3(1, 0, 0);
     Vector3 ZDirection = new Vector3(0, 0, 1);
     public Transform Cam;
     public int Bullets = 10;
+    public Transform Gun;
 
     static float moveSpeed = 30.0f;
     static float rotateSpeed = 60.0f;
     public Vector3 front;
 
+    // position of shotgun and effect
+    public Transform FirePos;
+    public GameObject FireEffect;
+    public GameObject FakeBullet;
+
     void Start()
     {
         myRigid = GetComponent<Rigidbody>();
+        currState = State.Idle;
     }
 
     void Update()
     {
-        Move();
+        StateManage();
+    }
 
+    public void StateManage()
+    {
+        if(!rebounding && Input.GetKeyDown(KeyCode.K))
+        {
+            shotGun();
+            rebounding = true;
+            rebound();
+        }
+        else if (Input.GetKey(KeyCode.C))
+        {
+            Crawl();
+            currState = State.Crawl;
+        }
+        else if (Input.anyKey)
+        {
+            Stand();
+            currState = State.Walk;
+            Move();
+        }
+        else
+        {
+            Stand();
+            currState = State.Idle;
+        }
     }
 
     public void Aim(Vector3 targetPos)
     {
-        transform.LookAt(targetPos);
+        Vector3 target = new Vector3(targetPos.x, FirePos.position.y, targetPos.z);
+        transform.LookAt(target);
     }
 
     public void Move()
@@ -86,5 +123,57 @@ public class Player : MonoBehaviour
     public void Decr()
     {
         Bullets--;
+    }
+
+    public void rebound()
+    {
+        Vector3 currRot = Gun.eulerAngles;
+        Vector3 upward = new Vector3(0, 0, 10);
+        Gun.eulerAngles = currRot + upward;
+        StartCoroutine(_rebound(currRot));
+    }
+
+    IEnumerator _rebound(Vector3 currRot)
+    {
+        int i = 0;
+        while (i++ < 500)
+        {
+            Gun.rotation = Quaternion.Lerp(Gun.rotation, Quaternion.Euler(currRot), 6 * Time.deltaTime);
+            yield return null;
+        }
+        Gun.eulerAngles = currRot;
+        rebounding = false;
+        yield break;
+    }
+
+    public void Crawl()
+    {
+        if(currState != State.Crawl)
+        {
+            Gun.position = Gun.position - YDirection;
+        }
+        Move();
+    }
+
+    public void Stand()
+    {
+        if(currState == State.Crawl)
+        {
+            Gun.position = Gun.position + YDirection;
+        }
+    }
+
+    public void shotGun()
+    {
+        int i = 0;
+        while (i++ < 3)
+        {
+            GameObject tempBullet = Instantiate(FakeBullet, FirePos.transform.position, FirePos.transform.rotation);
+            tempBullet.GetComponent<FakeBullet>().Boom();
+            Destroy(tempBullet, 2.0f);
+        }
+        GameObject spark = Instantiate(FireEffect, FirePos.position, Quaternion.identity);
+        spark.transform.SetParent(this.transform);
+        Destroy(spark, 1.0f);
     }
 }

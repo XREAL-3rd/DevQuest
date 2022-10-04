@@ -60,6 +60,10 @@ public class CamFollow : MonoBehaviour
             {
                 Debug.Log("총알 없어!!!\n");
             }
+            else if (GameControl.main.player.rebounding)
+            {
+                Debug.Log("반동 중 발사 불가\n");
+            }
             else
             {
                 if (aimed && cur < waiting)

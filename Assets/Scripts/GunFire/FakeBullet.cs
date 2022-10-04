@@ -4,7 +4,7 @@ using UnityEngine;
 public class FakeBullet : MonoBehaviour
 {
     Vector3 bulletPosition;
-    float moveSpeed = 50.0f;
+    float moveSpeed = 70.0f;
     Rigidbody myRigid;
     Vector3 dir;
 
@@ -22,5 +22,19 @@ public class FakeBullet : MonoBehaviour
         bulletPosition += dir * moveSpeed * Time.deltaTime;
 
         myRigid.MovePosition(bulletPosition);
+    }
+
+    public void Boom()
+    {
+        //change tag to variate the effect on the target
+        gameObject.tag ="ShotGun";
+
+        //change size
+        float size = 0.2f;
+        this.transform.localScale = new Vector3(size, size, size);
+
+        //방향 랜덤
+        Vector3 newDir = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        this.transform.eulerAngles = this.transform.eulerAngles + newDir;
     }
 }

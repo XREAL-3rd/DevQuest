@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 4
   sparkEffect: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
+  fireEffect: {fileID: 100004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
   spice: {fileID: 2100000, guid: d634f695d7fc3b2479eaec83bc044d20, type: 2}
   shingle: {fileID: 2100000, guid: aa92370f24b71d4428525f91cfb88005, type: 2}
 --- !u!54 &6421703886670251641
