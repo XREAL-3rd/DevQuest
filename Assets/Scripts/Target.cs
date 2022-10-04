@@ -5,7 +5,7 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     public float maxHealth = 100;
-    private float health;
+    [SerializeField] private float health;
 
     //생성되면 자신을 Game에 등록
     private void OnEnable()

@@ -18,12 +18,10 @@ public class Game : MonoBehaviour
         get => over;
         set
         {
-            if (!over)
-            {
-                //종료시 UI 보여주기
-                over = value;
-                WinUI.gameObject.SetActive(true);
-            }
+            //종료시 UI 보여주기
+            over = value;
+            WinUI.gameObject.SetActive(value);
+            Cursor.visible = value;
         }
     }
 
@@ -40,6 +38,7 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
+        Cursor.visible = false;
         WinUI.gameObject.SetActive(false);
     }
 
@@ -58,5 +57,19 @@ public class Game : MonoBehaviour
     public void RemoveTarget(Target target)
     {
         if (targets.Remove(target) && targets.Count == 0) Over = true;
+    }
+
+    public void Continue()
+    {
+        Over = false;
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+         Application.Quit();
+#endif
     }
 }
