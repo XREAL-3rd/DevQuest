@@ -47,4 +47,9 @@ public class PlayerRenderer : MonoBehaviour {
     public void Jump() {
         animator.SetTrigger("jump");
     }
+
+    public void Horray()
+    {
+        animator.SetTrigger("horray");
+    }
 }
