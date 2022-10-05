@@ -13,7 +13,11 @@ public class PlayerControl : MonoBehaviour {
     public enum State {
         none,
         idle,
-        jump
+        jump,
+        StandToCrouch,
+        CrouchIdle,
+        CrouchToStand,
+        CrouchWalk
     }
 
     [Header("Debug")]
@@ -59,12 +63,43 @@ public class PlayerControl : MonoBehaviour {
                         if (Input.GetKey(KeyCode.Space)) {
                             nextState = State.jump;
                         }
+                        if (Input.GetKey(KeyCode.Z))
+                        {
+                            nextState = State.StandToCrouch;
+                        }
                     }
                     break;
+
                 case State.jump:
                     if (landed) nextState = State.idle;
                     break;
-                //insert code here...
+                
+                case State.StandToCrouch:
+                    nextState = State.CrouchIdle;
+                    break;
+
+                case State.CrouchIdle:
+                    if (Input.GetKey(KeyCode.Z))
+                    {
+                        nextState = State.CrouchToStand;
+                    }
+                    if (Input.GetKey(KeyCode.W) & Input.GetKey(KeyCode.A) & Input.GetKey(KeyCode.S) & Input.GetKey(KeyCode.D))
+                    {
+                        nextState = State.CrouchWalk;
+                    }
+                    break;
+
+                case State.CrouchToStand:
+                    nextState = State.idle;
+                    break;
+
+                case State.CrouchWalk:
+                    if (!Input.GetKey(KeyCode.W) & !Input.GetKey(KeyCode.A) & !Input.GetKey(KeyCode.S) & !Input.GetKey(KeyCode.D))
+                    {
+                        nextState = State.CrouchIdle;
+                    }
+                    break;
+                    //insert code here...
             }
         }
 
@@ -80,6 +115,15 @@ public class PlayerControl : MonoBehaviour {
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
+
+                case State.StandToCrouch:
+                    animator.Crouch();
+                    break;
+
+                case State.CrouchToStand:
+                    animator.UnCrouch();
+                    break;
+                    
                 //insert code here...
             }
             stateTime = 0f;
@@ -97,7 +141,7 @@ public class PlayerControl : MonoBehaviour {
         landed = Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
     }
 
-    //WASD 인풋을 처리하는 함수
+    //WASD 인풋을 처리하는 함수 + Z
     private void UpdateInput() {
         Vector3 move = Vector3.zero;
         moving = false;
@@ -120,9 +164,9 @@ public class PlayerControl : MonoBehaviour {
         rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
 
         if (shooter.shooting) {
-            Debug.Log(Mathf.DeltaAngle(camt.transform.rotation.eulerAngles.y, animator.transform.rotation.eulerAngles.y));
+            //Debug.Log(Mathf.DeltaAngle(camt.transform.rotation.eulerAngles.y, animator.transform.rotation.eulerAngles.y));
             if (Mathf.Abs(Mathf.DeltaAngle(camt.transform.rotation.eulerAngles.y, animator.transform.rotation.eulerAngles.y)) > 100) {
-                Debug.Log("Fix rotations");
+                //Debug.Log("Fix rotations");
                 rotation = Quaternion.Euler(0, (int)camt.transform.rotation.eulerAngles.y / 45 * 45, 0);
             }
         }

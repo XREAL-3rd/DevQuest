@@ -8,5 +8,5 @@ using UnityEngine.UI;
 public class CoinData : ScriptableObject
 {
     [SerializeField]
-   public Material material;
+    public Material material;
 }

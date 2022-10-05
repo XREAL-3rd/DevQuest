@@ -7,7 +7,6 @@ using TMPro;
 public class Coin : MonoBehaviour
 {
     public CoinData coinData;
-    public Material material;
 
     public GameObject player;
     public GameObject coin;
@@ -17,7 +16,7 @@ public class Coin : MonoBehaviour
 
     void Start()
     {
-        material = coinData.material;
+        GetComponent<MeshRenderer>().material = coinData.material;
     }
 
     void OnTriggerEnter(Collider other)
