@@ -10,9 +10,9 @@ public class PlayerRenderer : MonoBehaviour
     public Animator animator;
 
     [Header("Settings")] public float turnSpeed = 3f;
+    [Header("Debug")] public bool crouching;
 
-    public bool rangeAttack;
-    private bool isWalking;
+    [SerializeField] private bool isWalking;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class PlayerRenderer : MonoBehaviour
     {
         animator.SetBool("walking", isWalking);
         animator.SetBool("landed", pControl.landed);
-        animator.SetBool("rangeAttack", rangeAttack);
+        animator.SetBool("crouching", crouching);
 
         transform.rotation = Quaternion.Lerp(transform.rotation, pControl.rotation, Time.deltaTime * turnSpeed);
 
@@ -46,9 +46,19 @@ public class PlayerRenderer : MonoBehaviour
         }
     }
 
+    public void RangeAttack()
+    {
+        animator.SetTrigger("rangeAttack");
+    }
+
     public void MeleeAttack()
     {
         animator.SetTrigger("meleeAttack");
+    }
+
+    public void SkillAttack()
+    {
+        animator.SetTrigger("skillAttack");
     }
 
     public void Jump()
@@ -60,6 +70,20 @@ public class PlayerRenderer : MonoBehaviour
     public bool IsPlaying(string name)
     {
         var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.normalizedTime >= 0 && stateInfo.IsName(name);
+        return stateInfo.normalizedTime > 0 && stateInfo.IsName(name);
+    }
+
+    public bool IsInTransition(string name)
+    {
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.normalizedTime > 0 && stateInfo.IsName(name) && animator.IsInTransition(0);
+    }
+
+    public bool IsAnyPlaying(params string[] names)
+    {
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        bool any = false;
+        for (int i = 0; i < names.Length && !any; i++) any = stateInfo.IsName(names[i]);
+        return stateInfo.normalizedTime > 0 && any;
     }
 }
