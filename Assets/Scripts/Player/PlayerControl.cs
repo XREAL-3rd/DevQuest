@@ -48,8 +48,6 @@ public class PlayerControl : MonoBehaviour
         stateTime += Time.deltaTime;
         CheckLanded();
 
-        Debug.Log($"current: {state}      next: {nextState}");
-        
         if (nextState == State.None)
         {
             switch (state)
