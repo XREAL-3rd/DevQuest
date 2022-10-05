@@ -5682,7 +5682,17 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: c14eca1890dec2f4f953e4c8bca8fe6f, type: 2}
     - target: {fileID: 9114973182239481715, guid: dbd28e26685c8c84cba6814af11fb07a, type: 3}
       propertyPath: m_WarningMessage
-      value: 
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+        'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
+        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+        'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9114973182239481715, guid: dbd28e26685c8c84cba6814af11fb07a, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbd28e26685c8c84cba6814af11fb07a, type: 3}
@@ -5783,7 +5793,6 @@ GameObject:
   - component: {fileID: 2749362624247797068}
   - component: {fileID: 2749362624247797110}
   - component: {fileID: 2749362624247797111}
-  - component: {fileID: 2749362624247797112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5840,6 +5849,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   landed: 0
   moving: 0
+  sitting: 0
   rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &2749362624247797111
 MonoBehaviour:
@@ -5854,21 +5864,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPreFab: {fileID: 240299663192025492, guid: 7d51adf715d464246b3ee7774945775c, type: 3}
+  playerRenderer: {fileID: 714577803}
   cam: {fileID: 963194227}
---- !u!114 &2749362624247797112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2749362624247797069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 900b4f58681d04c4d9580aa8279a3f09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pcon: {fileID: 2749362624247797110}
-  walkParticle: {fileID: 317827133}
-  animator: {fileID: 251145612}
-  turnSpeed: 3
-  rangeAttack: 1

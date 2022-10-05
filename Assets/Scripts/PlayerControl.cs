@@ -13,7 +13,8 @@ public class PlayerControl : MonoBehaviour {
     public enum State {
         none,
         idle,
-        jump
+        jump,
+        sit
     }
 
     [Header("Debug")]
@@ -23,7 +24,7 @@ public class PlayerControl : MonoBehaviour {
 
     public PlayerRenderer animator;
 
-    public bool landed = false, moving = false;
+    public bool landed = false, moving = false, sitting = false;
     //1ȸ�� �������� ���� �ִϸ��̼��� �߰��ϰ� �ʹٸ�, ���� �߿��� animator.rangeAttack�� ������ �����ϰų�, ���� ���۽� animator.MeleeAttack()�� ȣ���ϼ���.
     //���ڴ� ���� ���� ���Ÿ� ���� �ִϸ��̼���, ���ڴ� ȣ�� �� �ٰŸ� ���� �ִϸ��̼��� ����մϴ�.
     //���� ��ü�� PlayerRenderer.cs�� �����ϼ���.
@@ -97,25 +98,30 @@ public class PlayerControl : MonoBehaviour {
 
     //WASD ��ǲ�� ó���ϴ� �Լ�
     private void UpdateInput() {
-        Vector3 move = Vector3.zero;
+        sitting = false;
         moving = false;
-        if (Input.GetKey(KeyCode.W)) {
-            move += ForwardVector() * 1;
+        if (Input.GetKey(KeyCode.LeftControl)) {
+            sitting = true;
+        } else {
+            Vector3 move = Vector3.zero;
+            if (Input.GetKey(KeyCode.W)) {
+                move += ForwardVector() * 1;
+            }
+            if (Input.GetKey(KeyCode.S)) {
+                move += ForwardVector() * -1;
+            }
+            if (Input.GetKey(KeyCode.D)) {
+                move += RightVector() * 1;
+            }
+            if (Input.GetKey(KeyCode.A)) {
+                move += RightVector() * -1;
+            }
+            if (move.x != 0 || move.z != 0) {
+                rotation = Quaternion.LookRotation(move);
+                moving = true;
+            }
+            rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
         }
-        if (Input.GetKey(KeyCode.S)) {
-            move += ForwardVector() * -1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            move += RightVector() * 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            move += RightVector() * -1;
-        }
-        if (move.x != 0 || move.z != 0) {
-            rotation = Quaternion.LookRotation(move);
-            moving = true;
-        }
-        rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
     }
 
     //ī�޶� �������� �հ� ���� ���͸� ������ִ� �Լ�
