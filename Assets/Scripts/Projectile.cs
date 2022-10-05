@@ -10,16 +10,10 @@ public class Projectile : MonoBehaviour
     private Vector3 shootDir;
     [SerializeField] private float force;
 
-    public void SetUp(Transform pos, Vector3 dir){
+    public void Start(){
         rb = GetComponent<Rigidbody>();
         trans = GetComponent<Transform>();
-        shootDir = dir;
-        trans = pos;
-    }
-
-    public void Fire(){
-        Vector3 shoot_dir;
-        shoot_dir = this.shootDir.normalized;
-        rb.AddForce(shoot_dir * force);
+        shootDir = new Vector3(trans.forward.x, trans.forward.y, trans.forward.z);
+        rb.AddForce(shootDir * force);
     }
 }

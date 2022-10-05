@@ -23,10 +23,11 @@ public class ItemSpawn : MonoBehaviour
 
     public Item SpawnItem(ItemType type)
     {
-        var newItem = Instantiate(itemPrefab).GetComponent<Item>();
+        GameObject gameItem;
+        var random_position = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
+        gameItem = Instantiate(itemPrefab, random_position, Quaternion.identity);
         
-        // 여기서 null return 하는데 instantiate이 잘못된 건지?
-        Debug.Log(newItem);
+        var newItem = gameItem.GetComponent<Item>();
         newItem.ItemData = itemDatas[(int)(type)];
         return newItem;
     }

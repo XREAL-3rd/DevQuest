@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
-    private static float DIST_MOVE = 3f;
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpAmount = 4f;
     [SerializeField] private float damage = 10f;    
+
 
     public enum State {
         none,
@@ -24,6 +24,7 @@ public class PlayerControl : MonoBehaviour {
     public State nextState = State.none;
     private float stateTime;
 
+    public Transform shootOrigin;
     public GameObject projectilePrefab;
 
     public PlayerRenderer animator;
@@ -126,9 +127,8 @@ public class PlayerControl : MonoBehaviour {
         Ray aim;
         aim = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        var projectile_temp = Instantiate(projectilePrefab).GetComponent<Projectile>();
-        projectile_temp.SetUp(transform, transform.forward);
-        projectile_temp.Fire();
+        GameObject projectile_temp = Instantiate(projectilePrefab, shootOrigin.position, rotation);
+        Destroy(projectile_temp, 5f);
         // GameObject projectile = Instantiate(projectilePrefab, transform.position, rotation);
         
         // // 방향이 정확하지 않은 것 같음. 어떤 요소 가져와야 정확한 방향이 생성될지
