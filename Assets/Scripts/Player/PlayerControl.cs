@@ -12,7 +12,8 @@ public class PlayerControl : MonoBehaviour
     {
         None,
         Idle,
-        Jump
+        Jump,
+        Crouch,
     }
 
     [Header("Debug")] public State state = State.None;
@@ -58,13 +59,19 @@ public class PlayerControl : MonoBehaviour
                         {
                             nextState = State.Jump;
                         }
-                    }
 
+                        if (Input.GetKey(KeyCode.X))
+                        {
+                            nextState = State.Crouch;
+                        }
+                    }
                     break;
                 case State.Jump:
                     if (landed) nextState = State.Idle;
                     break;
-                //insert code here...
+                case State.Crouch:
+                    if (Input.GetKey(KeyCode.Space)) nextState = State.Jump;
+                    break;
             }
         }
 
@@ -80,7 +87,9 @@ public class PlayerControl : MonoBehaviour
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
-                //insert code here...
+                case State.Crouch:
+                    animator.Crouch();
+                    break;
             }
 
             stateTime = 0f;
@@ -88,7 +97,7 @@ public class PlayerControl : MonoBehaviour
         
         UpdateInput();
         
-        if (state != State.Jump && Input.GetMouseButtonDown(0))
+        if (state == State.Idle && Input.GetMouseButtonDown(0))
         {
             SetAttack();
         }
