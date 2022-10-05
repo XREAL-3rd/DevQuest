@@ -4,10 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - WoodAim
   - Bullet
-  - FxTemporaire
   - Item
+  - WoodAim
+  - FxTemporaire
+  - ShotGun
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
+  - 
   - 
   - 
   - 

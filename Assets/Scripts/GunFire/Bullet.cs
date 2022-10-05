@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
     [HideInInspector] public CamFollow cam;
     public Transform startFire;
     Vector3 bulletPosition;
-    float moveSpeed = 50.0f;
+    float moveSpeed = 70.0f;
     Rigidbody myRigid;
     Vector3 dir;
 

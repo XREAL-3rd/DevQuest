@@ -10,6 +10,7 @@ public class CamFollow : MonoBehaviour
     public float height = 0.2f;
     public float smoothRotate = 5.0f;
     private Transform tr;
+    public AudioSource audioSource;
 
     Ray ray;
     RaycastHit hit;
@@ -60,8 +61,13 @@ public class CamFollow : MonoBehaviour
             {
                 Debug.Log("총알 없어!!!\n");
             }
+            else if (GameControl.main.player.rebounding)
+            {
+                Debug.Log("반동 중 발사 불가\n");
+            }
             else
             {
+                audioSource.Play();
                 if (aimed && cur < waiting)
                 {
                     Debug.Log("발사\n");

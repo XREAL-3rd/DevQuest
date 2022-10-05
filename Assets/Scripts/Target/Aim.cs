@@ -6,6 +6,7 @@ public class Aim : MonoBehaviour
 {
     public int life = 4;
     public GameObject sparkEffect;
+    public GameObject fireEffect;
     public Material spice;
     public Material shingle;
     //private GameObject thisAim;
@@ -34,6 +35,11 @@ public class Aim : MonoBehaviour
             Debug.Log("hit\n");
             life -= 1;
             showEffect(collision);
+        }else if (collision.collider.gameObject.CompareTag("ShotGun"))
+        {
+            Debug.Log("ShotGun hit\n");
+            life -= 1;
+            showEffectShotGun(collision);
         }
     }
 
@@ -56,5 +62,15 @@ public class Aim : MonoBehaviour
         GameObject spark = Instantiate(sparkEffect, contact.point, rot);
         spark.transform.SetParent(this.transform);
         Destroy(spark, 1.0f);
+    }
+
+    private void showEffectShotGun(Collision collision)
+    {
+        // 충돌 지점
+        ContactPoint contact = collision.contacts[0];
+        // contact.normal: 충돌지점의 법선 백터
+        GameObject fire = Instantiate(fireEffect, contact.point, Quaternion.identity);
+        fire.transform.SetParent(this.transform);
+        Destroy(fire, 2.0f);
     }
 }
