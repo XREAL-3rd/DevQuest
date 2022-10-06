@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
+    public static float jumpAmount = 4f;
 
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 20f;
-    public static float jumpAmount = 4f;
+    [SerializeField] private float moveSpeed = 10f;
 
     public enum State {
         none,
         idle,
         jump
     }
+    [Header("Keybind")]
+    public KeyCode crouchKey = KeyCode.LeftControl;
 
     [Header("Debug")]
     public State state = State.none;
@@ -21,18 +23,19 @@ public class PlayerControl : MonoBehaviour {
     private float stateTime;
 
     public PlayerRenderer animator;
-
     public bool landed = false, moving = false;
     
     public Quaternion rotation = Quaternion.identity;
     private Rigidbody rigid;
     private Collider col;
     private Transform camt;
+    private CapsuleCollider capco;
 
     private void Start() {
         camt = FindObjectOfType<Camera>().transform;
         rigid = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+        capco = GetComponent<CapsuleCollider>();
 
         state = State.none;
         nextState = State.idle;
@@ -44,8 +47,7 @@ public class PlayerControl : MonoBehaviour {
 
         stateTime += Time.deltaTime;
         CheckLanded();
-        //insert code here...
-
+        Crouch();
         if (nextState == State.none) {
             switch (state) {
                 case State.idle:
@@ -61,9 +63,6 @@ public class PlayerControl : MonoBehaviour {
                 //insert code here...
             }
         }
-
-
-      
         if (nextState != State.none) {
             state = nextState;
             nextState = State.none;
@@ -81,15 +80,12 @@ public class PlayerControl : MonoBehaviour {
         UpdateInput();
         //insert code here...
     }
-
-   
     private void CheckLanded() {
         
         
         landed = Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
     }
 
-   
     private void UpdateInput() {
         Vector3 move = Vector3.zero;
         moving = false;
@@ -123,5 +119,19 @@ public class PlayerControl : MonoBehaviour {
         v.y = 0;
         v.Normalize();
         return v;
+    }
+    private void Crouch() { 
+        if(Input.GetKey(crouchKey)) //press key
+        {
+        capco.center = new Vector3(0, 0.3f, 0);
+        capco.height = 1f;
+        //rigid.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+
+        }
+        if(Input.GetKeyUp(crouchKey)) //off
+        {
+        capco.center = new Vector3(0, 0.02f, 0);
+        capco.height = 2f;
+        }
     }
 }

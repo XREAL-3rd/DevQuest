@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
             if(isGameOver)
             {
                 Debug.Log("GAME OVER");//game ending scene만들어서 바꾸기
-
                 itemList.SetActive(false); //item 비활성화
             }
         }
@@ -48,7 +47,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-        if (time >= 60.0f || targetList.Count == 0)//60초 후 종료, targetlist 개수가 안줄음...........
+        if (time >= 60.0f)
         {
             IsGameOver = true;
         }
