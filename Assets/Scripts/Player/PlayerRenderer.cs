@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerRenderer : MonoBehaviour {
     [Header("Preset Fields")]
-    public PlayerControl pcon;
+    public PlayerControl playerControl;
     public ParticleSystem walkParticle;
     public Animator animator;
 
@@ -13,20 +13,22 @@ public class PlayerRenderer : MonoBehaviour {
 
     public bool rangeAttack;
     private bool isWalking;
+    private bool isRolling;
 
     private void Awake() {
-        pcon.animator = this;
+        playerControl.playerRenderer = this;
     }
 
     private void Update() {
         animator.SetBool("walking", isWalking);
-        animator.SetBool("landed", pcon.landed);
+        animator.SetBool("landed", playerControl.landed);
         animator.SetBool("rangeAttack", rangeAttack);
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, pcon.rotation, Time.deltaTime * turnSpeed);
+        if(playerControl.canMove)
+            transform.rotation = Quaternion.Lerp(transform.rotation, playerControl.rotation, Time.deltaTime * turnSpeed);
 
-        if(pcon.landed && pcon.moving) {
-            if (!isWalking) {
+        if(playerControl.landed && playerControl.moving) {
+            if (!isWalking /*|| isRolling */) {
                 isWalking = true;
                 walkParticle.time = 0f;
                 walkParticle.Play();
@@ -46,5 +48,9 @@ public class PlayerRenderer : MonoBehaviour {
 
     public void Jump() {
         animator.SetTrigger("jump");
+    }
+
+    public void Roll() {
+        animator.SetTrigger("roll");
     }
 }

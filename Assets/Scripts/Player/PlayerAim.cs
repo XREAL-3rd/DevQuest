@@ -10,6 +10,8 @@ public class PlayerAim : MonoBehaviour {
     private PlayerStatus status;
     private Transform attackPoint;
 
+    private bool canFireBall = true;
+
     private void Start() {
         status = GetComponent<PlayerStatus>();
         attackPoint = transform.GetChild(0);
@@ -18,8 +20,8 @@ public class PlayerAim : MonoBehaviour {
     private void Update() {
         if (Input.GetMouseButtonDown(0))
             HitScanAttack();
-        else if (Input.GetMouseButtonDown(1))
-            FireBallAttack();
+        else if (Input.GetMouseButtonDown(1) && canFireBall)
+            StartCoroutine(FireBallAttack());
     }
 
     private void HitScanAttack() {
@@ -38,8 +40,12 @@ public class PlayerAim : MonoBehaviour {
         }
     }
 
-    private void FireBallAttack() {
-        GameObject fireBall = Instantiate(fireBallPrefab, attackPoint.position, Quaternion.Euler(45f, 90f, 180f));
+    private IEnumerator FireBallAttack() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        GameObject fireBall = Instantiate(fireBallPrefab, attackPoint.position, Quaternion.identity);
         fireBall.GetComponent<FireBall>().MagicalDamage = status.MagicalDamage;
+        canFireBall = false;
+        yield return new WaitForSeconds(1f);
+        canFireBall = true;
     }
 }
