@@ -7,13 +7,13 @@ public class ItemSpawn : MonoBehaviour
 {
     public enum ItemType {Health, Speed};
     [SerializeField]
-    private List<ItemData> itemDatas;
+    private List<ItemData> itemDatas = new List<ItemData>();
     [SerializeField]
     private GameObject itemPrefab;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         for (int i = 0; i < itemDatas.Count; i++){
             var item = SpawnItem((ItemType)i);
@@ -21,12 +21,14 @@ public class ItemSpawn : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public Item SpawnItem(ItemType type)
     {
-        var newItem = Instantiate(itemPrefab).GetComponent<Item>();
-        newItem.itemData = itemDatas[(int)type];
-        newItem.name = newItem.itemData.itemName;
+        GameObject gameItem;
+        var random_position = new Vector3(Random.Range(-5f, 5f), 0, Random.Range(-5f, 5f));
+        gameItem = Instantiate(itemPrefab, random_position, Quaternion.identity);
+        
+        var newItem = gameItem.GetComponent<Item>();
+        newItem.ItemData = itemDatas[(int)(type)];
         return newItem;
     }
 }

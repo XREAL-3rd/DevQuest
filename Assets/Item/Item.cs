@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public ItemData itemData;
+    [SerializeField]
+    ItemData itemData;
     public ItemData ItemData { set { itemData = value; } }
     public void WatchItemData(){
         Debug.Log("NAME :: " + itemData.itemName);

@@ -5,20 +5,15 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 
-    private Transform proj;
+    private Transform trans;
     private Rigidbody rb;
     private Vector3 shootDir;
     [SerializeField] private float force;
 
-
-    public void SetUp(Vector3 dir){
-        shootDir = dir;
+    public void Start(){
         rb = GetComponent<Rigidbody>();
-    }
-
-    public void Fire(){
-        Vector3 shoot_dir;
-        shoot_dir = this.shootDir.normalized;
-        rb.AddForce(shoot_dir * force);
+        trans = GetComponent<Transform>();
+        shootDir = new Vector3(trans.forward.x, trans.forward.y, trans.forward.z);
+        rb.AddForce(shootDir * force);
     }
 }
