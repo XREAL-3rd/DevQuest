@@ -8,7 +8,6 @@ public class ItemData : ScriptableObject {
 
     [SerializeField]
     private GameObject effectFxPrefab;
-    private GameObject effectFx;
 
     [SerializeField]
     private Vector3 fxOffset;
@@ -23,7 +22,7 @@ public class ItemData : ScriptableObject {
     public float EffectDuration { get { return effectDuration; } set { effectDuration = value; } }
 
     public IEnumerator PowerEffect(GameObject player) {
-        effectFx = Instantiate(effectFxPrefab, player.transform.position + fxOffset, Quaternion.identity);
+        Instantiate(effectFxPrefab, player.transform.position + fxOffset, Quaternion.identity);
         player.GetComponent<PlayerStatus>().PhysicalDamage = 20f;
         player.GetComponent<PlayerStatus>().MagicalDamage = 20f;
         yield return new WaitForSeconds(effectDuration);
@@ -32,7 +31,7 @@ public class ItemData : ScriptableObject {
     }
 
     public IEnumerator SpeedEffect(GameObject player) {
-        effectFx = Instantiate(effectFxPrefab, player.transform.position + fxOffset, Quaternion.Euler(-90, 0, 0));
+        Instantiate(effectFxPrefab, player.transform.position + fxOffset, Quaternion.Euler(-90, 0, 0));
         player.GetComponent<PlayerControl>().MoveSpeed = 40f;
         yield return new WaitForSeconds(effectDuration);
         player.GetComponent<PlayerControl>().MoveSpeed = 20f;

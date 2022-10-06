@@ -1,136 +1,182 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 20f;
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
-    [SerializeField] private float jumpAmount = 4f;
+    [SerializeField] private float jumpAmount = 8f;
 
     public enum State {
         none,
         idle,
-        jump
+        jump,
+        roll
     }
 
     [Header("Debug")]
     public State state = State.none;
-    public State nextState = State.none;
-    private float stateTime;
+    public State nextState = State.idle;
 
-    public PlayerRenderer animator;
-
-    public bool landed = false, moving = false;
-    //1회차 과제에서 공격 애니메이션을 추가하고 싶다면, 공격 중에는 animator.rangeAttack를 참으로 설정하거나, 공격 시작시 animator.MeleeAttack()을 호출하세요.
-    //전자는 참일 동안 원거리 공격 애니메이션을, 후자는 호출 시 근거리 공격 애니메이션을 재생합니다.
-    //구현 자체는 PlayerRenderer.cs를 참조하세요.
+    public PlayerRenderer playerRenderer;
+    public bool landed = false;
+    public bool moving = false;
+    public bool canMove = true;
+    public bool rolling = false;
     public Quaternion rotation = Quaternion.identity;
+    public Vector3 moveDirection;
+
+    public Transform renderTransform;
+    public Vector3 forward;
+    
     private Rigidbody rigid;
     private Collider col;
-    private Transform camt;
+    private Transform camTransform;
+    private Animator animator;
+
+    private Coroutine rollCoroutine;
 
     private void Start() {
-        camt = FindObjectOfType<Camera>().transform;
+        camTransform = FindObjectOfType<Camera>().transform;
         rigid = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
+        animator = GetComponentInChildren<Animator>();
+        renderTransform = transform.GetChild(1).GetComponent<Transform>();
 
-        state = State.none;
-        nextState = State.idle;
-        stateTime = 0f;
+        state = State.idle;
+        nextState = State.none;
         rotation = transform.rotation;
     }
 
     private void Update() {
-        //0. 글로벌 상황 판단
-        stateTime += Time.deltaTime;
-        CheckLanded();
-        //insert code here...
+        landed = CheckLanded();
+        forward = SetForward();
+        Move();
 
-        //1. 스테이트 전환 상황 판단
         if (nextState == State.none) {
             switch (state) {
                 case State.idle:
                     if (landed) {
-                        if (Input.GetKey(KeyCode.Space)) {
+                        if (Input.GetKey(KeyCode.Space))
                             nextState = State.jump;
-                        }
+                        if (Input.GetKey(KeyCode.LeftShift))
+                            nextState = State.roll;
                     }
                     break;
                 case State.jump:
-                    if (landed) nextState = State.idle;
+                    if (landed)
+                        nextState = State.idle;
                     break;
-                //insert code here...
+                case State.roll:
+                    if (!rolling) {
+                        nextState = State.idle;
+                        rollCoroutine = null;
+                    }
+                    else
+                        nextState = State.roll;
+                    break;
             }
         }
 
-
-        //2. 스테이트 초기화
         if (nextState != State.none) {
             state = nextState;
             nextState = State.none;
             switch (state) {
-                case State.jump:
-                    Vector3 vel = rigid.velocity;
-                    vel.y = jumpAmount;
-                    rigid.velocity = vel;
-                    animator.Jump();
+                case State.idle:
+                    Idle();
                     break;
-                //insert code here...
+                case State.jump:
+                    Jump();
+                    break;
+                case State.roll:
+                    if(!rolling)
+                        StartCoroutine(Roll());
+                    break;
             }
-            stateTime = 0f;
         }
-
-        //3. 글로벌 & 스테이트 업데이트
-        UpdateInput();
-        //insert code here...
     }
 
-    //땅에 닿았는지 여부를 확인하고 landed를 설정해주는 함수
-    private void CheckLanded() {
-        //발 위치에 작은 구를 하나 생성에 그 구에 땅이 닿는지 검사한다.
+    private void Idle() {
+        canMove = true;
+    }
+    
+    private void Jump() {
+        playerRenderer.Jump();
+        Vector3 vel = rigid.velocity;
+        vel.y = jumpAmount;
+        rigid.velocity = vel;
+    }
+
+    private IEnumerator Roll() {
+        playerRenderer.Roll();
+        canMove = false;
+        rolling = true;
+        yield return StartCoroutine(RollPosition());
+    }
+
+    private IEnumerator RollPosition() {
+        WaitForSeconds waitForSeconds = new WaitForSeconds(0.01f);
+        Vector3 destination = transform.position + forward * 10;
+
+        for (int i = 0; i < 110; i++) {
+            transform.position = Vector3.Lerp(transform.position, destination, 0.01f);
+            yield return waitForSeconds;
+        }
+        rolling = false;
+    }
+
+    public bool CheckLanded() {
         //1 << 6은 Ground의 레이어가 6이기 때문.
-        landed = Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
+        return Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
     }
 
-    //WASD 인풋을 처리하는 함수
-    private void UpdateInput() {
-        Vector3 move = Vector3.zero;
+    private Vector3 SetForward() {
+        return renderTransform.forward;
+    }
+
+    private Vector3 SetMoveDirection() {
+        Vector3 moveDirection = Vector3.zero;
         moving = false;
-        if (Input.GetKey(KeyCode.W)) {
-            move += ForwardVector() * 1;
-        }
-        if (Input.GetKey(KeyCode.S)) {
-            move += ForwardVector() * -1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            move += RightVector() * 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            move += RightVector() * -1;
-        }
-        if (move.x != 0 || move.z != 0) {
-            rotation = Quaternion.LookRotation(move);
+
+        if (Input.GetKey(KeyCode.W))
+            moveDirection += ForwardVector() * 1;
+        if (Input.GetKey(KeyCode.S))
+            moveDirection += ForwardVector() * -1;
+        if (Input.GetKey(KeyCode.D))
+            moveDirection += RightVector() * 1;
+        if (Input.GetKey(KeyCode.A))
+            moveDirection += RightVector() * -1;
+
+        if (moveDirection.x != 0 || moveDirection.z != 0) {
+            rotation = Quaternion.LookRotation(moveDirection);
             moving = true;
         }
-        rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
+        moveDirection.Normalize();
+        return moveDirection;
     }
 
-    //카메라 기준으로 앞과 우측 벡터를 계산해주는 함수
+    private void Move() {
+        Vector3 moveDirection = SetMoveDirection();
+        if (canMove)
+            rigid.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
+    }
+
     private Vector3 ForwardVector() {
-        Vector3 v = camt.forward;
+        Vector3 v = camTransform.forward;
         v.y = 0;
-        v.Normalize();
-        return v;
+        return v.normalized;
     }
 
     private Vector3 RightVector() {
-        Vector3 v = camt.right;
+        Vector3 v = camTransform.right;
         v.y = 0;
-        v.Normalize();
-        return v;
+        return v.normalized;
     }
 }

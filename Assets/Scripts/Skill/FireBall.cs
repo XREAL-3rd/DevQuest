@@ -4,29 +4,44 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour {
     public GameObject ExplosionFx;
+
     [SerializeField]
     private float speed;
-
     private float magicalDamage;
     public float MagicalDamage { set { magicalDamage = value; } }
 
-    new private Rigidbody rigidbody;
-    private Ray ray;
-    private Vector3 direction;
-
     private void OnEnable() {
-        float distance = Vector3.Distance(GameObject.Find("AttackPoint").transform.position, GameObject.Find("Sphere").transform.position);
-        rigidbody = GetComponent<Rigidbody>();
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+
+        Vector3 direction = SetDirection();
+        Quaternion rotation = SetRotation(direction);
+
+        this.transform.rotation = rotation;
+        rigidbody.AddForce(direction * speed);
+    }
+
+    private Vector3 SetDirection() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
         Vector3 direction;
-
+        
         if (Physics.Raycast(ray, out hit) && !hit.transform.CompareTag("Player"))
             direction = ray.direction * hit.distance - (transform.position - ray.origin);
         else
             direction = ray.direction * 30 - (transform.position - ray.origin);
-        direction = direction.normalized * speed;
-        rigidbody.AddForce(direction);
+        
+        return direction.normalized;
+    }
+
+    private void Update() {
+        Vector3 direction = SetDirection();
+        Debug.DrawRay(transform.position, transform.forward, Color.blue);
+        Debug.DrawRay(transform.position, transform.up, Color.red);
+    }
+
+    private Quaternion SetRotation(Vector3 direction) {
+        Vector3 cross = Vector3.Cross(direction, transform.right);
+        return Quaternion.LookRotation(cross, Vector3.back);
     }
 
     private void OnCollisionEnter(Collision collision) {
