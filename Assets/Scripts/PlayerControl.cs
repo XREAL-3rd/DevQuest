@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
-    //°£´ÜÇÑ fsm state¹æ½ÄÀ¸·Î µ¿ÀÛÇÏ´Â Player ControllerÀÔ´Ï´Ù. Fsm state machine¿¡ ´ëÇÑ ´õ ÀÚ¼¼ÇÑ ³»¿ëÀº ¼¼¼Ç 3È¸Â÷¿¡¼­ ¹è¿ï °ÍÀÔ´Ï´Ù!
-    //Áö±ÝÀº state°¡ 3°³»ÓÀÌÁö¸¸ 3È¸Â÷ ¼¼¼Ç¿¡¼­ Á÷Á¢ state¸¦ ´õ Ãß°¡ÇÏ´Â °úÁ¦°¡ ³ª°¥ ¿¹Á¤ÀÔ´Ï´Ù.
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ fsm stateï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Player Controllerï¿½Ô´Ï´ï¿½. Fsm state machineï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 3È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½!
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ stateï¿½ï¿½ 3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3È¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ stateï¿½ï¿½ ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpAmount = 4f;
+    public float moveSpeed = 5f;
+    public float jumpAmount = 4f;
 
     public enum State {
         none,
         idle,
-        jump
+        jump,
+        sit
     }
 
     [Header("Debug")]
@@ -23,10 +24,10 @@ public class PlayerControl : MonoBehaviour {
 
     public PlayerRenderer animator;
 
-    public bool landed = false, moving = false;
-    //1È¸Â÷ °úÁ¦¿¡¼­ °ø°Ý ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Ãß°¡ÇÏ°í ½Í´Ù¸é, °ø°Ý Áß¿¡´Â animator.rangeAttack¸¦ ÂüÀ¸·Î ¼³Á¤ÇÏ°Å³ª, °ø°Ý ½ÃÀÛ½Ã animator.MeleeAttack()À» È£ÃâÇÏ¼¼¿ä.
-    //ÀüÀÚ´Â ÂüÀÏ µ¿¾È ¿ø°Å¸® °ø°Ý ¾Ö´Ï¸ÞÀÌ¼ÇÀ», ÈÄÀÚ´Â È£Ãâ ½Ã ±Ù°Å¸® °ø°Ý ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Àç»ýÇÕ´Ï´Ù.
-    //±¸Çö ÀÚÃ¼´Â PlayerRenderer.cs¸¦ ÂüÁ¶ÇÏ¼¼¿ä.
+    public bool landed = false, moving = false, sitting = false;
+    //1È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï°ï¿½ ï¿½Í´Ù¸ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½ animator.rangeAttackï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°Å³ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û½ï¿½ animator.MeleeAttack()ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.
+    //ï¿½ï¿½ï¿½Ú´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ú´ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ PlayerRenderer.csï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.
     public Quaternion rotation = Quaternion.identity;
     private Rigidbody rigid;
     private Collider col;
@@ -44,12 +45,12 @@ public class PlayerControl : MonoBehaviour {
     }
 
     private void Update() {
-        //0. ±Û·Î¹ú »óÈ² ÆÇ´Ü
+        //0. ï¿½Û·Î¹ï¿½ ï¿½ï¿½È² ï¿½Ç´ï¿½
         stateTime += Time.deltaTime;
         CheckLanded();
         //insert code here...
 
-        //1. ½ºÅ×ÀÌÆ® ÀüÈ¯ »óÈ² ÆÇ´Ü
+        //1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È¯ ï¿½ï¿½È² ï¿½Ç´ï¿½
         if (nextState == State.none) {
             switch (state) {
                 case State.idle:
@@ -67,7 +68,7 @@ public class PlayerControl : MonoBehaviour {
         }
 
 
-        //2. ½ºÅ×ÀÌÆ® ÃÊ±âÈ­
+        //2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­
         if (nextState != State.none) {
             state = nextState;
             nextState = State.none;
@@ -83,42 +84,47 @@ public class PlayerControl : MonoBehaviour {
             stateTime = 0f;
         }
 
-        //3. ±Û·Î¹ú & ½ºÅ×ÀÌÆ® ¾÷µ¥ÀÌÆ®
+        //3. ï¿½Û·Î¹ï¿½ & ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         UpdateInput();
         //insert code here...
     }
 
-    //¶¥¿¡ ´ê¾Ò´ÂÁö ¿©ºÎ¸¦ È®ÀÎÇÏ°í landed¸¦ ¼³Á¤ÇØÁÖ´Â ÇÔ¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ landedï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
     private void CheckLanded() {
-        //¹ß À§Ä¡¿¡ ÀÛÀº ±¸¸¦ ÇÏ³ª »ý¼º¿¡ ±× ±¸¿¡ ¶¥ÀÌ ´ê´ÂÁö °Ë»çÇÑ´Ù.
-        //1 << 6Àº GroundÀÇ ·¹ÀÌ¾î°¡ 6ÀÌ±â ¶§¹®.
+        //ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½Ñ´ï¿½.
+        //1 << 6ï¿½ï¿½ Groundï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾î°¡ 6ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½.
         landed = Physics.CheckSphere(new Vector3(col.bounds.center.x, col.bounds.center.y - ((HEIGHT - 1f) / 2 + 0.15f), col.bounds.center.z), 0.45f, 1 << 6, QueryTriggerInteraction.Ignore);
     }
 
-    //WASD ÀÎÇ²À» Ã³¸®ÇÏ´Â ÇÔ¼ö
+    //WASD ï¿½ï¿½Ç²ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     private void UpdateInput() {
-        Vector3 move = Vector3.zero;
+        sitting = false;
         moving = false;
-        if (Input.GetKey(KeyCode.W)) {
-            move += ForwardVector() * 1;
+        if (Input.GetKey(KeyCode.LeftControl)) {
+            sitting = true;
+        } else {
+            Vector3 move = Vector3.zero;
+            if (Input.GetKey(KeyCode.W)) {
+                move += ForwardVector() * 1;
+            }
+            if (Input.GetKey(KeyCode.S)) {
+                move += ForwardVector() * -1;
+            }
+            if (Input.GetKey(KeyCode.D)) {
+                move += RightVector() * 1;
+            }
+            if (Input.GetKey(KeyCode.A)) {
+                move += RightVector() * -1;
+            }
+            if (move.x != 0 || move.z != 0) {
+                rotation = Quaternion.LookRotation(move);
+                moving = true;
+            }
+            rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
         }
-        if (Input.GetKey(KeyCode.S)) {
-            move += ForwardVector() * -1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            move += RightVector() * 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            move += RightVector() * -1;
-        }
-        if (move.x != 0 || move.z != 0) {
-            rotation = Quaternion.LookRotation(move);
-            moving = true;
-        }
-        rigid.MovePosition(transform.position + move.normalized * Time.deltaTime * moveSpeed);
     }
 
-    //Ä«¸Þ¶ó ±âÁØÀ¸·Î ¾Õ°ú ¿ìÃø º¤ÅÍ¸¦ °è»êÇØÁÖ´Â ÇÔ¼ö
+    //Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
     private Vector3 ForwardVector() {
         Vector3 v = camt.forward;
         v.y = 0;

@@ -16,12 +16,12 @@ public class Bullet : MonoBehaviour
         if (other.tag == "Target")
         {
             other.gameObject.GetComponent<Target>().Hit();
-            Destroy (gameObject);
             GameObject effect =
                 Instantiate(hitEffectPreFab,
                 transform.position,
                 transform.rotation);
             Destroy(effect, 1.0f);
         }
+        Destroy (gameObject);
     }
 }
