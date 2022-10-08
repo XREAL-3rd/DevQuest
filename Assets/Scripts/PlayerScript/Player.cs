@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     Rigidbody myRigid;
+    ShotGunImg shotGunAble;
 
     enum State { Idle, Walk, Crawl };
     State currState;
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         myRigid = GetComponent<Rigidbody>();
+        shotGunAble = GameObject.Find("ShotGunAble").GetComponent<ShotGunImg>();
         currState = State.Idle;
     }
 
@@ -119,11 +121,13 @@ public class Player : MonoBehaviour
     public void Incr(int num)
     {
         Bullets += num;
+        GameControl.main.text.changeText();
     }
 
     public void Decr()
     {
         Bullets--;
+        GameControl.main.text.changeText();
     }
 
     public void rebound()
@@ -137,13 +141,14 @@ public class Player : MonoBehaviour
     IEnumerator _rebound(Vector3 currRot)
     {
         int i = 0;
-        while (i++ < 500)
+        while (i++ < 1000)
         {
             Gun.rotation = Quaternion.Lerp(Gun.rotation, Quaternion.Euler(currRot), 6 * Time.deltaTime);
             yield return null;
         }
         Gun.eulerAngles = currRot;
         rebounding = false;
+        shotGunAble.shotGunAble();
         yield break;
     }
 
@@ -178,5 +183,6 @@ public class Player : MonoBehaviour
         GameObject spark = Instantiate(FireEffect, FirePos.position, Quaternion.identity);
         spark.transform.SetParent(this.transform);
         Destroy(spark, 1.0f);
+        shotGunAble.shotGunDisable();
     }
 }
