@@ -57,13 +57,16 @@ public class PlayerControl : MonoBehaviour
         itemEffects = new ItemEffects(this);
     }
 
+    private void Awake()
+    {
+        skills = new Skills(skillTypes);
+    }
+
     private void Start()
     {
         camTransform = FindObjectOfType<Camera>().transform;
         rigid = GetComponent<Rigidbody>();
         colli = GetComponent<Collider>();
-
-        skills = new Skills(skillTypes);
 
         state = State.none;
         nextState = State.idle;
@@ -75,8 +78,8 @@ public class PlayerControl : MonoBehaviour
     private void Update()
     {
         //0. 글로벌 상황 판단
+        if (Time.timeScale <= 0) return;
         CheckLanded();
-        if (Game.Instance.Over) return;
 
         //1. 스테이트 전환 판단
         if (nextState == State.none)

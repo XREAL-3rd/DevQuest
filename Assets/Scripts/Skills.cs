@@ -6,24 +6,24 @@ public class Skills
 {
     public bool Shoot { get; private set; }
     public SkillType Current { get; private set; }
+    public readonly List<SkillType> types;
 
-    private readonly List<SkillType> skills;
-    private readonly bool[] cooldowns;
+    private readonly float[] cooldowns;
 
-    public Skills(List<SkillType> skillTypes)
+    public Skills(List<SkillType> types)
     {
-        skills = skillTypes;
-        cooldowns = new bool[skills.Count];
+        this.types = types;
+        cooldowns = new float[types.Count];
     }
 
     public bool TryCast(out IEnumerator coroutine)
     {
-        for (int i = 0; i < skills.Count; i++)
+        for (int i = 0; i < types.Count; i++)
         {
-            if (Input.GetKey(skills[i].KeyCode) && !cooldowns[i])
+            if (Input.GetKey(types[i].KeyCode) && cooldowns[i] <= 0)
             {
-                Current = skills[i];
-                cooldowns[i] = true;
+                Current = types[i];
+                cooldowns[i] = 1;
                 coroutine = CooldownCoroutine(i);
                 return true;
             }
@@ -45,7 +45,13 @@ public class Skills
 
     public IEnumerator CooldownCoroutine(int i)
     {
-        yield return new WaitForSeconds(skills[i].Cooldown);
-        cooldowns[i] = false;
+        cooldowns[i] -= Time.deltaTime;
+        while (cooldowns[i] > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            cooldowns[i] -= Time.deltaTime / types[i].Cooldown;
+        }
     }
+
+    public float Cooldown(int i) => cooldowns[i];
 }

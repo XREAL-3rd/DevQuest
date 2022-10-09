@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour
@@ -10,7 +13,8 @@ public class Game : MonoBehaviour
 
     public PlayerControl Player => player;
     [SerializeField] private PlayerControl player;
-    [SerializeField] private Image WinUI;
+    [SerializeField] private Image winUI;
+    [SerializeField] private Image menuUI;
     private readonly HashSet<Target> targets = new HashSet<Target>();
 
     private bool over;
@@ -22,10 +26,14 @@ public class Game : MonoBehaviour
         {
             //종료시 UI 보여주기
             over = value;
-            WinUI.gameObject.SetActive(value);
+            winUI.gameObject.SetActive(value);
             Cursor.visible = value;
+            if (value) Pause();
+            else Continue();
         }
     }
+
+    public bool UIStop { get; set; }
 
     Game()
     {
@@ -40,13 +48,32 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
+        Continue();
         Cursor.visible = false;
-        WinUI.gameObject.SetActive(false);
+        winUI.gameObject.SetActive(false);
     }
 
     private void Start()
     {
         if (targets.Count == 0) Over = true;
+    }
+
+    private void Update()
+    {
+        if (UIStop) return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (menuUI.gameObject.activeSelf)
+            {
+                menuUI.gameObject.SetActive(false);
+                Continue();
+            }
+            else
+            {
+                menuUI.gameObject.SetActive(true);
+                Pause();
+            }
+        }
     }
 
     //Target 등록
@@ -61,9 +88,25 @@ public class Game : MonoBehaviour
         if (targets.Remove(target) && targets.Count == 0) Over = true;
     }
 
+    public void Pause()
+    {
+        Time.timeScale = 0;
+    }
+
     public void Continue()
     {
+        Time.timeScale = 1;
+    }
+
+    public void KeepPlaying()
+    {
         Over = false;
+    }
+
+    public void Title()
+    {
+        Pause();
+        SceneManager.LoadSceneAsync(0);
     }
 
     public void Quit()

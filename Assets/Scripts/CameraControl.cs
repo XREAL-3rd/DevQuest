@@ -24,7 +24,7 @@ public class CameraControl : MonoBehaviour
 
     private void Update()
     {
-        if(Game.Instance.Over) return;
+        if (Time.timeScale <= 0) return;
         UpdateInput();
         transform.position = player.transform.position - transform.rotation * Vector3.forward * distance;
         transform.forward = player.transform.position - transform.position;

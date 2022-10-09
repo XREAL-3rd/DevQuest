@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Skill", menuName = "Skill/Type", order = 0)]
 public class SkillType : ScriptableObject
 {
+    [SerializeField] private Sprite icon;
+    public Sprite Icon => icon;
+    
     [SerializeField] private GameObject attackVFX;
     public GameObject AttackVFX => attackVFX;
 
