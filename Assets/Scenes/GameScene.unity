@@ -5844,6 +5844,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   jumpAmount: 5
+  dashAmount: 3
+  dashCooldown: 1
   state: 0
   nextState: 0
   animator: {fileID: 0}
