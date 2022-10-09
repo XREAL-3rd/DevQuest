@@ -51,7 +51,7 @@ public class PlayerControl : MonoBehaviour
 
     private Transform camt;
 
-    private float nextDashTime = 0f; // 다음 대쉬가 가능한 시간 = 마지막 사용시간 + 쿨다운
+    public float nextDashTime = 0f; // 다음 대쉬가 가능한 시간 = 마지막 사용시간 + 쿨다운
 
     private void Start()
     {
@@ -172,7 +172,7 @@ public class PlayerControl : MonoBehaviour
                     .MovePosition(transform.position +
                     move.normalized * dashAmount);
             }
-            else
+            else if (Time.time >= nextDashTime - 0.9f)
             {
                 rigid
                     .MovePosition(transform.position +
