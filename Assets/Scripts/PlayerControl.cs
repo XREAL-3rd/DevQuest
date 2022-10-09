@@ -1,12 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
     public GameObject clickparticle;
     public GameObject shootparticle;
     public GameObject bullet;
+    public GameObject bomb;
+
+    bool Rclick = true;
+    public GameObject SkillOn;
+    public GameObject SkillCool;
+    public Image SkillFill;
+
+    
 
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
@@ -48,42 +59,69 @@ public class PlayerControl : MonoBehaviour {
         rotation = transform.rotation;
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
-		//insert code here...
+        //insert code here...
 
-		if (Input.GetMouseButtonDown(0))
+        if (!EventSystem.current.IsPointerOverGameObject())
 		{
-            RaycastHit poshit;
-            Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            animator.MeleeAttack();
-            if (Physics.Raycast(posray, out poshit))
+            if (Input.GetMouseButtonDown(0))
             {
-                Ray shootray = new Ray(transform.position, poshit.point - transform.position);
-
-                RaycastHit hit;
-                if(Physics.Raycast(shootray, out hit))
+                RaycastHit poshit;
+                Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(posray, out poshit))
                 {
-                    Instantiate(clickparticle, hit.point, Quaternion.identity);
+                    animator.MeleeAttack();
+                    Vector3 look = poshit.point - transform.position;
+                    look.y = 0;
+                    rotation = Quaternion.LookRotation(look);
+                    Ray shootray = new Ray(transform.position, poshit.point - transform.position);
 
-                    var emission = bullet.GetComponent<ParticleSystem>().emission;
-                    emission.rateOverDistance = 1f;
-                    bullet.transform.SetParent(null);
-                    bullet.transform.position = hit.point;
-                    Destroy(bullet, 1.0f);
-                    bullet = Instantiate(shootparticle, this.transform.position, Quaternion.identity, this.transform);
-
-                    if (hit.transform.gameObject.CompareTag("Target"))
+                    RaycastHit hit;
+                    if (Physics.Raycast(shootray, out hit))
                     {
-                        Vector3 shoot = hit.point - this.transform.position;
-                        hit.transform.gameObject.GetComponent<Target>().attack(80, shoot);
+                        Instantiate(clickparticle, hit.point, Quaternion.identity);
+
+                        var emission = bullet.GetComponent<ParticleSystem>().emission;
+                        emission.rateOverDistance = 1f;
+                        bullet.transform.SetParent(null);
+                        bullet.transform.position = hit.point;
+                        Destroy(bullet, 1.0f);
+                        bullet = Instantiate(shootparticle, this.transform.position, Quaternion.identity, this.transform);
+
+                        if (hit.transform.gameObject.CompareTag("Target"))
+                        {
+                            Vector3 shoot = hit.point - this.transform.position;
+                            hit.transform.gameObject.GetComponent<Target>().attack(80, shoot);
+                        }
                     }
                 }
+
             }
-            
+            else if (Input.GetMouseButtonDown(1) && Rclick)
+            {
+                RaycastHit hit;
+                Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(posray, out hit))
+                {
+                    Vector3 look = hit.point - transform.position;
+                    look.y = 0;
+                    rotation = Quaternion.LookRotation(look);
+
+                    Rigidbody bombparticle = Instantiate(bomb, this.transform).GetComponent<Rigidbody>();
+                    Vector3 v = (hit.point - this.transform.position).normalized;
+                    v.y += 0.6f;
+                    bombparticle.AddForce(v * 8f, ForceMode.Impulse);
+
+                    StartCoroutine(CoolTime());
+                }
+
+            }
         }
+        
 
         //1. 스테이트 전환 상황 판단
         if (nextState == State.none) {
@@ -167,5 +205,24 @@ public class PlayerControl : MonoBehaviour {
         v.y = 0;
         v.Normalize();
         return v;
+    }
+
+    IEnumerator CoolTime()
+    {
+        Rclick = false;
+        SkillOn.SetActive(false);
+        SkillCool.SetActive(true);
+
+        for (int i = 0; i < 100; i++)
+        {
+            SkillFill.fillAmount += 0.01f;
+
+            yield return new WaitForSeconds(0.03f);
+        }
+
+        SkillOn.SetActive(true);
+        SkillCool.SetActive(false);
+        SkillFill.fillAmount = 0f;
+        Rclick = true;
     }
 }
