@@ -13,12 +13,21 @@ public class petskill : MonoBehaviour
     void Start()
     {
 
+<<<<<<< Updated upstream
         startpos = this.transform.position;
         startrot = this.transform.rotation;
+=======
+>>>>>>> Stashed changes
     }
 
     void Update()
     {
+<<<<<<< Updated upstream
+=======
+        
+        startpos = this.transform.position;
+        startrot = this.transform.rotation;
+>>>>>>> Stashed changes
         if(Input.GetKeyDown(KeyCode.R))//
         {
             if(!isDelay)
