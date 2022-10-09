@@ -1,6 +1,8 @@
+using UnityEngine;
 public class RunState : BaseMovementState
 {
     public override void EnterState(MovementStateManager movement){
+        Debug.Log("run state entered");
         movement.pRenderer.toggleRun(true);
     }
 
@@ -8,7 +10,7 @@ public class RunState : BaseMovementState
         if(!movement.moving){
             ExitState(movement, movement.Idle);
         }
-        else if(!movement.running){
+        else if(movement.walking){
             ExitState(movement, movement.Walk);
         }
     }
@@ -17,5 +19,4 @@ public class RunState : BaseMovementState
         movement.pRenderer.toggleRun(false);
         movement.SwitchState(state);
     }
-
 }

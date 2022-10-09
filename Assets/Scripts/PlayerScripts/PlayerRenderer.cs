@@ -15,9 +15,7 @@ public class PlayerRenderer : MonoBehaviour {
 
     private void Awake() {}
 
-    private void Update() {
-        transform.rotation = Quaternion.Lerp(transform.rotation, pcon.rotation, Time.deltaTime * turnSpeed);
-    }
+    private void Update() {}
 
     public void toggleWalk(bool input){
         if(isWalking != input){
