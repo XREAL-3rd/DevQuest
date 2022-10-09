@@ -10821,9 +10821,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3862f374e59334177873875dcba9e79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 10
+  turnSpeed: 3
   pRenderer: {fileID: 0}
+  col: {fileID: 0}
+  rigid: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 1}
+  camt: {fileID: 0}
   landed: 1
+  moving: 0
   walking: 0
   crouching: 0
   jumping: 0
