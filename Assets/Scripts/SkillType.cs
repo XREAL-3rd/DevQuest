@@ -16,6 +16,12 @@ public class SkillType : ScriptableObject
     [SerializeField] private float duration;
     public float Duration => duration;
 
+    [SerializeField] private float cooldown;
+    public float Cooldown => cooldown;
+
+    [SerializeField] private KeyCode keyCode;
+    public KeyCode KeyCode => keyCode;
+
     public IEnumerator SkillCoroutine(Vector3 pos)
     {
         float time = 0;

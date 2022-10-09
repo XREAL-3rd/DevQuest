@@ -8,6 +8,8 @@ public class Game : MonoBehaviour
 {
     public static Game Instance { get; private set; }
 
+    public PlayerControl Player => player;
+    [SerializeField] private PlayerControl player;
     [SerializeField] private Image WinUI;
     private readonly HashSet<Target> targets = new HashSet<Target>();
 

@@ -11811,7 +11811,8 @@ MonoBehaviour:
   crouchingMoveSpeed: 1.5
   jumpAmount: 6
   arrow: {fileID: 4546711469116751666, guid: d66470a298202964c8121a23bae79dd0, type: 3}
-  skill: {fileID: 11400000, guid: ec193f7b6d41ca2438d4661093dad5f3, type: 2}
+  skillTypes:
+  - {fileID: 11400000, guid: ec193f7b6d41ca2438d4661093dad5f3, type: 2}
   state: 0
   nextState: 0
   landed: 1

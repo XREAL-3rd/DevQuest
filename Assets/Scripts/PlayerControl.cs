@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -14,12 +15,13 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float crouchingMoveSpeed = 2f;
     [SerializeField] private float jumpAmount = 4f;
     [SerializeField] private GameObject arrow;
-    [SerializeField] private SkillType skill;
+
+    [SerializeField] private List<SkillType> skillTypes;
 
     [Header("Debug")] public State state = State.none;
     public State nextState = State.none;
 
-    public bool landed = true, moving, shoot, skillShoot;
+    public bool landed = true, moving, shoot;
 
     //1회차 과제에서 공격 애니메이션을 추가하고 싶다면, 공격 중에는 animator.rangeAttack를 참으로 설정하거나, 공격 시작시 animator.MeleeAttack()을 호출하세요.
     //전자는 참일 동안 원거리 공격 애니메이션을, 후자는 호출 시 근거리 공격 애니메이션을 재생합니다.
@@ -31,6 +33,9 @@ public class PlayerControl : MonoBehaviour
 
     //아이템 효과 모아놓은 클래스
     public readonly ItemEffects itemEffects;
+
+    //스킬 관리 클래스
+    public Skills skills;
 
     private Rigidbody rigid;
     private Collider colli;
@@ -58,6 +63,8 @@ public class PlayerControl : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         colli = GetComponent<Collider>();
 
+        skills = new Skills(skillTypes);
+
         state = State.none;
         nextState = State.idle;
         rotation = transform.rotation;
@@ -81,7 +88,11 @@ public class PlayerControl : MonoBehaviour
                     {
                         //좌클릭 공격
                         if (Input.GetMouseButton(0)) nextState = State.attack;
-                        else if (Input.GetMouseButton(1)) nextState = State.skill;
+                        else if (skills.TryCast(out IEnumerator coroutine))
+                        {
+                            nextState = State.skill;
+                            StartCoroutine(coroutine);
+                        }
                         else if (Input.GetKey(KeyCode.LeftShift)) nextState = State.crouching;
                         else if (Input.GetKey(KeyCode.Space)) nextState = State.jump;
                     }
@@ -103,10 +114,10 @@ public class PlayerControl : MonoBehaviour
 
                     break;
                 case State.skill:
-                    if (skillShoot && animator.IsAnyPlaying("Idle", "Walk"))
+                    if (skills.Shoot && animator.IsAnyPlaying("Idle", "Walk"))
                     {
                         nextState = State.idle;
-                        skillShoot = false;
+                        skills.OnCastEnded();
                     }
 
                     break;
@@ -183,11 +194,11 @@ public class PlayerControl : MonoBehaviour
 
                 break;
             case State.skill:
-                if (!skillShoot && animator.IsInTransition("SkillAttack"))
+                if (!skills.Shoot && animator.IsInTransition("SkillAttack"))
                 {
-                    skillShoot = true;
-                    StartCoroutine(skill.SkillCoroutine(Aim));
-                    Instantiate<GameObject>(skill.AttackVFX, Aim, Quaternion.identity);
+                    skills.OnCast();
+                    StartCoroutine(skills.Current.SkillCoroutine(Aim));
+                    Instantiate<GameObject>(skills.Current.AttackVFX, Aim, Quaternion.identity);
                 }
 
                 break;
