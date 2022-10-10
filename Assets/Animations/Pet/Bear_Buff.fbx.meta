@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: d614bdd708fc9914da3949d1b0c9cad8
 ModelImporter:
+<<<<<<< Updated upstream
   serializedVersion: 19301
+=======
+  serializedVersion: 21202
+>>>>>>> Stashed changes
   internalIDToNameTable:
   - first:
       74: -2937485055117710192
@@ -20,6 +24,10 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+<<<<<<< Updated upstream
+=======
+    removeConstantScaleCurves: 0
+>>>>>>> Stashed changes
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -49,21 +57,39 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+<<<<<<< Updated upstream
+=======
+    nodeNameCollisionStrategy: 0
+>>>>>>> Stashed changes
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+<<<<<<< Updated upstream
+=======
+    bakeAxisConversion: 0
+>>>>>>> Stashed changes
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+<<<<<<< Updated upstream
+=======
+    optimizeBones: 1
+>>>>>>> Stashed changes
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+<<<<<<< Updated upstream
+=======
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+>>>>>>> Stashed changes
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -97,6 +123,10 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
+<<<<<<< Updated upstream
+=======
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+>>>>>>> Stashed changes
   additionalBone: 0
   userData: 
   assetBundleName: 
