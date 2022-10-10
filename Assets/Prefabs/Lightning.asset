@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2d4f0dd9a14012b603fb81ef7a8e55, type: 3}
   m_Name: Lightning
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: c3a47c4fb05c4204ebcaa6071e753e4e, type: 3}
   attackVFX: {fileID: 7085862756500612711, guid: 539835a65acb400488d6381a5a1519d3, type: 3}
   damage: 30
   radius: 1
   duration: 3
+  cooldown: 10
+  keyCode: 101

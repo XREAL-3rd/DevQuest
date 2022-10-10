@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Skill", menuName = "Skill/Type", order = 0)]
 public class SkillType : ScriptableObject
 {
+    [SerializeField] private Sprite icon;
+    public Sprite Icon => icon;
+    
     [SerializeField] private GameObject attackVFX;
     public GameObject AttackVFX => attackVFX;
 
@@ -15,6 +18,12 @@ public class SkillType : ScriptableObject
 
     [SerializeField] private float duration;
     public float Duration => duration;
+
+    [SerializeField] private float cooldown;
+    public float Cooldown => cooldown;
+
+    [SerializeField] private KeyCode keyCode;
+    public KeyCode KeyCode => keyCode;
 
     public IEnumerator SkillCoroutine(Vector3 pos)
     {
