@@ -11,6 +11,16 @@ public class Bomb : MonoBehaviour
         if (!other.CompareTag("Player"))
         {
             Instantiate(explosionParticle, this.transform.position, Quaternion.identity);
+            Collider[] targets = Physics.OverlapSphere(this.transform.position, 7f);
+            foreach (Collider target in targets)
+            {
+                if (target.CompareTag("Target"))
+                {
+                    Vector3 explosion = target.transform.position - this.transform.position;
+                    target.gameObject.GetComponent<Target>().attack(20, explosion);
+                }
+
+            }
             Destroy(this.gameObject);
         }
     }
