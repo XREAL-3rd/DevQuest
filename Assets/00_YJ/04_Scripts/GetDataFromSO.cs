@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 // 각 item에 붙을거다 
@@ -20,6 +21,7 @@ public class GetDataFromSO : MonoBehaviour
         {
 
             //각 함수들 실행 해주고 
+            UICheck();
             HitDamage();
             Speed();
             VFX();
@@ -42,7 +44,22 @@ public class GetDataFromSO : MonoBehaviour
 
     void VFX() // 이 VFX Instantiate 해주기
     {
-        Instantiate(itemData.vfx, this.gameObject.transform);
+       GameObject vfxTemp= Instantiate(itemData.vfx);
+        vfxTemp.transform.position = gameObject.transform.up;
     }
 
+    void UICheck()
+    {
+        if (gameObject.name.Contains("Run")) // 체리면
+        {
+            
+            Image cherryUI = GameObject.Find("Image_Cherry").GetComponent<Image>();
+            cherryUI.enabled = true;
+        }
+        if (gameObject.name.Contains("Damage")) // 체리면
+        {
+            Image lemonUI = GameObject.Find("Image_Lemon").GetComponent<Image>();
+            lemonUI.enabled = true;
+        }
+    }
 }

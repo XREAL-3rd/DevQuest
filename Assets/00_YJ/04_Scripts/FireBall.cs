@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
-    public static int hitDamage;
+    public static int hitDamage=34;
 
     private void Start()
     {
@@ -13,10 +13,6 @@ public class FireBall : MonoBehaviour
             hitDamage = 50;
         }
 
-        else
-        {
-            hitDamage = 34;
-        }
     }
 
     private void OnCollisionEnter(Collision collision)

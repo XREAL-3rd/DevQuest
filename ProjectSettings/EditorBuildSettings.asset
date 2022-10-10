@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/00_YJ/01_Scenes/HW01_YJ_StartScene.unity
+    guid: 92c4c0efe3b2a95499c4cdde9550cbb6
+  - enabled: 1
     path: Assets/00_YJ/01_Scenes/HW01_YJ.unity
-    guid: a9247d8232644c943825a1e4e3ddbb5b
+    guid: 5d59e428d51c7144a83ed930f9d91616
   - enabled: 1
     path: Assets/00_YJ/01_Scenes/HW01_YJ_GameOver.unity
     guid: efc3d0d598d48bc49bd967b9f8394701

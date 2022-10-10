@@ -14,6 +14,7 @@ public class Animal : MonoBehaviour
     public GameObject vfx_hit;
 
 
+
     [SerializeField] float maxHP;
     [SerializeField] float currentHP;
 
@@ -23,6 +24,7 @@ public class Animal : MonoBehaviour
     {
         maxHP = 100;
         currentHP = 100;
+
     }
 
     // Update is called once per frame
@@ -55,6 +57,8 @@ public class Animal : MonoBehaviour
 
         if (currentHP <= 0)
         {
+
+
             // Á×´Â ½Ã´¿ ÇÏ°í
             anim.SetTrigger("die");
 
