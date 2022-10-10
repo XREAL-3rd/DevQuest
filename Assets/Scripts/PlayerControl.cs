@@ -63,7 +63,7 @@ public class PlayerControl : MonoBehaviour {
                         if (Input.GetKey(KeyCode.Space)) {
                             nextState = State.jump;
                         }
-                        if (Input.GetKey(KeyCode.Z))
+                        if (Input.GetKeyDown(KeyCode.Z))
                         {
                             nextState = State.StandToCrouch;
                         }
@@ -79,7 +79,7 @@ public class PlayerControl : MonoBehaviour {
                     break;
 
                 case State.CrouchIdle:
-                    if (Input.GetKey(KeyCode.Z))
+                    if (Input.GetKeyDown(KeyCode.Z))
                     {
                         nextState = State.CrouchToStand;
                     }

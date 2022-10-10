@@ -45,7 +45,7 @@ public class GameEnd : MonoBehaviour
         }
         
         Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public bool IsGameEnd()

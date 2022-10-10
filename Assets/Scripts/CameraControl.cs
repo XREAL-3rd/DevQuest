@@ -12,13 +12,24 @@ public class CameraControl : MonoBehaviour {
 
     float rotation_x = 0f;
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+    public bool CursorLocked = false;
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            
+            if (CursorLocked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                CursorLocked = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                CursorLocked = true;
+            }
+        }
         // sensitivity - speed of mouse (rotation)
         // Time.deltaTime - doesn't rotate quicker if frame rate is high
         float mouse_x = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;

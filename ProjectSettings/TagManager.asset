@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FxTemporaire
   - Target
+  - NoButton
   layers:
   - Default
   - TransparentFX
