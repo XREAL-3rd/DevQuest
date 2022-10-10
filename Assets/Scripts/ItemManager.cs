@@ -14,11 +14,13 @@ public class ItemManager : MonoBehaviour
     void Awake()
     {
         main = this;
-        Invoke("SpawnItemObject", 2.0f);
+        StartCoroutine(SpawnItemObject());
     }
 
-    public void SpawnItemObject()
+    IEnumerator SpawnItemObject()
     {
+        yield return new WaitForSeconds(2.0f);
+
         float ranX = Random.Range(-30, 30);
         float ranZ = Random.Range(-10, 30);
         Vector3 ranPos = new Vector3(ranX, 2f, ranZ);
@@ -26,7 +28,8 @@ public class ItemManager : MonoBehaviour
         var newItem = Instantiate(itemBox, ranPos, Quaternion.identity).GetComponent<Item>();
         newItem.ItemData = ItemDatas[Random.Range(0, ItemDatas.Count)];
 
-        Invoke("SpawnItemObject", 5.0f);
+        yield return new WaitForSeconds(5.0f);
+        StartCoroutine(SpawnItemObject());
     }
 
     public void itemEffect(ItemData effect)
