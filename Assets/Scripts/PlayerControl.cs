@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
 public class PlayerControl : MonoBehaviour {
     private static float HEIGHT = 2f;
+
+    [Header("vfx")]
     public GameObject clickparticle;
     public GameObject shootparticle;
     public GameObject bullet;
     public GameObject bomb;
 
-    bool Rclick = true;
-    public GameObject SkillOn;
-    public GameObject SkillCool;
-    public Image SkillFill;
 
-    
+    [Header("bullet")]
+    public int bulletremain = 6;
+    public bool reloading = false;
+    bool triggerreload = false;
 
+
+ 
     //간단한 fsm state방식으로 동작하는 Player Controller입니다. Fsm state machine에 대한 더 자세한 내용은 세션 3회차에서 배울 것입니다!
     //지금은 state가 3개뿐이지만 3회차 세션에서 직접 state를 더 추가하는 과제가 나갈 예정입니다.
     [Header("Settings")]
@@ -29,7 +31,8 @@ public class PlayerControl : MonoBehaviour {
     public enum State {
         none,
         idle,
-        jump
+        jump,
+        reload
     }
 
     [Header("Debug")]
@@ -59,7 +62,7 @@ public class PlayerControl : MonoBehaviour {
         rotation = transform.rotation;
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
@@ -67,13 +70,15 @@ public class PlayerControl : MonoBehaviour {
 
         if (!EventSystem.current.IsPointerOverGameObject())
 		{
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !reloading)
             {
                 RaycastHit poshit;
                 Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(posray, out poshit))
                 {
                     animator.MeleeAttack();
+                    bulletremain--;  UIManager.main.UpdateBullet(bulletremain);
+                    if (bulletremain <= 0) triggerreload = true;
                     Vector3 look = poshit.point - transform.position;
                     look.y = 0;
                     rotation = Quaternion.LookRotation(look);
@@ -100,7 +105,7 @@ public class PlayerControl : MonoBehaviour {
                 }
 
             }
-            else if (Input.GetMouseButtonDown(1) && Rclick)
+            if (Input.GetMouseButtonDown(1) && UIManager.main.Rclick && !reloading)
             {
                 RaycastHit hit;
                 Ray posray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -116,10 +121,14 @@ public class PlayerControl : MonoBehaviour {
                     v.y += 0.6f;
                     bombparticle.AddForce(v * 8f, ForceMode.Impulse);
 
-                    StartCoroutine(CoolTime());
+                   StartCoroutine(UIManager.main.CoolTime());
                 }
 
             }
+
+			if(Input.GetKeyDown(KeyCode.R)){
+                triggerreload = true;
+			}
         }
         
 
@@ -131,12 +140,31 @@ public class PlayerControl : MonoBehaviour {
                         if (Input.GetKey(KeyCode.Space)) {
                             nextState = State.jump;
                         }
+                        else if (triggerreload)
+						{
+                            nextState = State.reload;
+						}
+                    }
+                    else if (triggerreload)
+                    {
+                        nextState = State.reload;
                     }
                     break;
                 case State.jump:
-                    if (landed) nextState = State.idle;
+                    if (triggerreload)
+                    {
+                        nextState = State.reload;
+                    }
+                    else if (landed) nextState = State.idle;
                     break;
                 //insert code here...
+                case State.reload:
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        nextState = State.jump;
+                    }
+                    else nextState = State.idle;
+                    break;
             }
         }
 
@@ -152,7 +180,11 @@ public class PlayerControl : MonoBehaviour {
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
-                //insert code here...
+                case State.reload:
+                    StartCoroutine(Reload());
+                    triggerreload = false;
+                    break;
+                    //insert code here...
             }
             stateTime = 0f;
         }
@@ -207,22 +239,12 @@ public class PlayerControl : MonoBehaviour {
         return v;
     }
 
-    IEnumerator CoolTime()
+
+    IEnumerator Reload()
     {
-        Rclick = false;
-        SkillOn.SetActive(false);
-        SkillCool.SetActive(true);
-
-        for (int i = 0; i < 100; i++)
-        {
-            SkillFill.fillAmount += 0.01f;
-
-            yield return new WaitForSeconds(0.03f);
-        }
-
-        SkillOn.SetActive(true);
-        SkillCool.SetActive(false);
-        SkillFill.fillAmount = 0f;
-        Rclick = true;
+        reloading = true;
+        yield return new WaitForSeconds(2f);
+        bulletremain = 6; UIManager.main.UpdateBullet(bulletremain);
+        reloading = false;
     }
 }
