@@ -126,7 +126,7 @@ public class PlayerControl : MonoBehaviour {
 
             }
 
-			if(Input.GetKeyDown(KeyCode.R)){
+			if(Input.GetKeyDown(KeyCode.R) && !reloading){
                 triggerreload = true;
 			}
         }
@@ -243,6 +243,7 @@ public class PlayerControl : MonoBehaviour {
     IEnumerator Reload()
     {
         reloading = true;
+        animator.ReLoad();
         yield return new WaitForSeconds(2f);
         bulletremain = 6; UIManager.main.UpdateBullet(bulletremain);
         reloading = false;

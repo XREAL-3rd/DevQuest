@@ -8192,6 +8192,7 @@ GameObject:
   - component: {fileID: 1838184767}
   - component: {fileID: 1838184766}
   - component: {fileID: 1838184768}
+  - component: {fileID: 1838184769}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8245,6 +8246,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2af117243d7ead2448a36a26a323e7a7, type: 2}
   itemBox: {fileID: 6126061240392456265, guid: b68045f0484cd5d498c13ee898a65525, type: 3}
   player: {fileID: 2749362624247797110}
+--- !u!114 &1838184769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838184765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce099a8197ac696408e300d8afc86c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletcount: {fileID: 879203300}
+  Rclick: 1
+  SkillOn: {fileID: 15976073}
+  SkillCool: {fileID: 1307319674}
+  SkillFill: {fileID: 389363656}
 --- !u!1 &1907801329 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 949053225108803074, guid: 8107547817d7ae84db316a65fa1da152, type: 3}
@@ -13741,9 +13759,8 @@ MonoBehaviour:
   shootparticle: {fileID: 1692517446758730, guid: 0faf45fa9fd417747a4881e92faf01f0, type: 3}
   bullet: {fileID: 1807158145}
   bomb: {fileID: 100004, guid: 09239c8ca7b71624a9a5127b41cf318f, type: 3}
-  SkillOn: {fileID: 15976073}
-  SkillCool: {fileID: 1307319674}
-  SkillFill: {fileID: 389363656}
+  bulletremain: 6
+  reloading: 0
   moveSpeed: 6
   jumpAmount: 8
   state: 0

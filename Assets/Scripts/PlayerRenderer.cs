@@ -44,6 +44,11 @@ public class PlayerRenderer : MonoBehaviour {
         animator.SetTrigger("meleeAttack");
     }
 
+    public void ReLoad()
+    {
+        animator.SetTrigger("disArm");
+    }
+
     public void Jump() {
         animator.SetTrigger("jump");
     }
