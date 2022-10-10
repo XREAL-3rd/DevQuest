@@ -8,6 +8,7 @@ public class GameControl : MonoBehaviour
     public static GameControl main;
 
     public NumberOfTargets targetNum;
+    public BulletNum text;
     [HideInInspector] public Player player;
 
     private void Awake()
@@ -15,6 +16,7 @@ public class GameControl : MonoBehaviour
         main = this;
         targetNum = GameObject.FindObjectOfType<NumberOfTargets>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        text = GameObject.Find("Bullet Num").GetComponent<BulletNum>();
     }
 
     // Start is called before the first frame update

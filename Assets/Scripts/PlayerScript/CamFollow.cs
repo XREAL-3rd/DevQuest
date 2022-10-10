@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CamFollow : MonoBehaviour
 {
@@ -54,8 +55,8 @@ public class CamFollow : MonoBehaviour
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // 클릭을 하면 발사
-        if (Input.GetMouseButtonDown(0))
+        // 클릭을 하면 발사 && UI위에 마우스가 없어야 한다
+        if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
         {
             if (!GameControl.main.player.IsBullet())
             {
