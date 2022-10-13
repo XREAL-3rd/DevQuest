@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : MonoBehaviour {
-    public GameObject ExplosionFx;
+public class Lightning_Throw : MonoBehaviour {
+    public GameObject Lightning;
 
     [SerializeField]
     private float speed;
@@ -22,10 +22,7 @@ public class FireBall : MonoBehaviour {
 
     private Vector3 SetDirection() {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        Vector3 direction;
-
-        direction = ray.direction * 30 - (transform.position - ray.origin);
-
+        Vector3 direction = ray.direction * 30 - (transform.position - ray.origin);
         return direction.normalized;
     }
 
@@ -37,10 +34,8 @@ public class FireBall : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if (collision.transform.CompareTag("Player"))
             return;
-        if (collision.transform.CompareTag("Target"))
-            collision.transform.GetComponent<TargetHealth>().GetFireBallAttacked(magicalDamage);
 
-        Instantiate(ExplosionFx, transform.position, Quaternion.identity);
+        Instantiate(Lightning, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 }

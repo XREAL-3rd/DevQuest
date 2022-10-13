@@ -24,31 +24,27 @@ public class PlayerControl : MonoBehaviour {
     [Header("Debug")]
     public State state = State.none;
     public State nextState = State.idle;
+    public Quaternion rotation = Quaternion.identity;
+    public Vector3 moveDirection;
 
-    public PlayerRenderer playerRenderer;
     public bool landed = false;
     public bool moving = false;
     public bool canMove = true;
     public bool rolling = false;
-    public Quaternion rotation = Quaternion.identity;
-    public Vector3 moveDirection;
 
+    public PlayerRenderer playerRenderer;
     public Transform renderTransform;
     public Vector3 forward;
     
     private Rigidbody rigid;
     private Collider col;
     private Transform camTransform;
-    private Animator animator;
-
-    private Coroutine rollCoroutine;
 
     private void Start() {
         camTransform = FindObjectOfType<Camera>().transform;
         rigid = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-        animator = GetComponentInChildren<Animator>();
-        renderTransform = transform.GetChild(1).GetComponent<Transform>();
+        renderTransform = transform.GetChild(0).GetComponent<Transform>();
 
         state = State.idle;
         nextState = State.none;
@@ -75,10 +71,8 @@ public class PlayerControl : MonoBehaviour {
                         nextState = State.idle;
                     break;
                 case State.roll:
-                    if (!rolling) {
+                    if (!rolling)
                         nextState = State.idle;
-                        rollCoroutine = null;
-                    }
                     else
                         nextState = State.roll;
                     break;
@@ -158,8 +152,7 @@ public class PlayerControl : MonoBehaviour {
             rotation = Quaternion.LookRotation(moveDirection);
             moving = true;
         }
-        moveDirection.Normalize();
-        return moveDirection;
+        return moveDirection.normalized;
     }
 
     private void Move() {
@@ -170,12 +163,14 @@ public class PlayerControl : MonoBehaviour {
 
     private Vector3 ForwardVector() {
         Vector3 v = camTransform.forward;
+        Debug.DrawRay(transform.position, camTransform.forward, Color.red);
         v.y = 0;
         return v.normalized;
     }
 
     private Vector3 RightVector() {
         Vector3 v = camTransform.right;
+        Debug.DrawRay(transform.position, camTransform.right, Color.blue);
         v.y = 0;
         return v.normalized;
     }

@@ -15,4 +15,4 @@ MonoBehaviour:
   effectFxPrefab: {fileID: 1844191813266838, guid: 5faee1ed4885f644e82ec96a2f302943, type: 3}
   fxOffset: {x: 0, y: 0, z: 0}
   itemEffect: 0
-  effectDuration: 10
+  effectDuration: 5

@@ -13,7 +13,6 @@ public class PlayerRenderer : MonoBehaviour {
 
     public bool rangeAttack;
     private bool isWalking;
-    private bool isRolling;
 
     private void Awake() {
         playerControl.playerRenderer = this;
@@ -28,7 +27,7 @@ public class PlayerRenderer : MonoBehaviour {
             transform.rotation = Quaternion.Lerp(transform.rotation, playerControl.rotation, Time.deltaTime * turnSpeed);
 
         if(playerControl.landed && playerControl.moving) {
-            if (!isWalking /*|| isRolling */) {
+            if (!isWalking) {
                 isWalking = true;
                 walkParticle.time = 0f;
                 walkParticle.Play();
@@ -52,5 +51,9 @@ public class PlayerRenderer : MonoBehaviour {
 
     public void Roll() {
         animator.SetTrigger("roll");
+    }
+
+    public void Cast() {
+        animator.SetTrigger("cast");
     }
 }

@@ -6,23 +6,26 @@ using static ItemData;
 public class Item : MonoBehaviour {
     [SerializeField]
     private ItemData itemData;
-    private GameObject effectFx;
+    private bool effectApplied;
 
     private void OnTriggerEnter(Collider other) {
-        if (!other.CompareTag("Player"))
+        if (!other.CompareTag("Player") || effectApplied)
             return;
-        
-        Destroy(gameObject);
-        ApplyEffect(other.gameObject);
+
+        effectApplied = true;
+        for(int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).gameObject.SetActive(false);
+
+        ApplyEffect(gameObject, other.gameObject);
     }
 
-    private void ApplyEffect(GameObject player) {
+    private void ApplyEffect(GameObject item, GameObject player) {
         switch (itemData.Effect) {
             case ItemEffect.POWER:
-                StartCoroutine(itemData.PowerEffect(player));
+                StartCoroutine(itemData.ApplyPowerEffect(item, player));
                 break;
             case ItemEffect.SPEED:
-                StartCoroutine(itemData.SpeedEffect(player));
+                StartCoroutine(itemData.ApplySpeedEffect(item, player));
                 break;
         }
     }
