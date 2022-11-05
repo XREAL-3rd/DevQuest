@@ -25,7 +25,16 @@ public class Arrow : MonoBehaviour
 
     public void setDir(Vector3 v)
     {
-        Debug.Log(v);
         dir = v - rb.transform.position;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == 6) // ground layer인 과녁이나 바닥에 화살이 맞은 경우
+        {
+            //rb.isKinematic = true;
+            //collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            speed = 0;
+        }
     }
 }
