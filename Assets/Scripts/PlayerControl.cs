@@ -10,6 +10,8 @@ public class PlayerControl : MonoBehaviour {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpAmount = 4f;
 
+    public ShootArrow shootArrow;
+
     public enum State {
         none,
         idle,
@@ -43,18 +45,23 @@ public class PlayerControl : MonoBehaviour {
         rotation = transform.rotation;
     }
 
-    private void Update() {
+    public void FixedUpdate()
+    {
         //0. 글로벌 상황 판단
         stateTime += Time.deltaTime;
         CheckLanded();
         //insert code here...
 
         //1. 스테이트 전환 상황 판단
-        if (nextState == State.none) {
-            switch (state) {
+        if (nextState == State.none)
+        {
+            switch (state)
+            {
                 case State.idle:
-                    if (landed) {
-                        if (Input.GetKey(KeyCode.Space)) {
+                    if (landed)
+                    {
+                        if (Input.GetKey(KeyCode.Space))
+                        {
                             nextState = State.jump;
                         }
                     }
@@ -62,23 +69,25 @@ public class PlayerControl : MonoBehaviour {
                 case State.jump:
                     if (landed) nextState = State.idle;
                     break;
-                //insert code here...
+                    //insert code here...
             }
         }
 
 
         //2. 스테이트 초기화
-        if (nextState != State.none) {
+        if (nextState != State.none)
+        {
             state = nextState;
             nextState = State.none;
-            switch (state) {
+            switch (state)
+            {
                 case State.jump:
                     Vector3 vel = rigid.velocity;
                     vel.y = jumpAmount;
                     rigid.velocity = vel;
                     animator.Jump();
                     break;
-                //insert code here...
+                    //insert code here...
             }
             stateTime = 0f;
         }
@@ -86,6 +95,20 @@ public class PlayerControl : MonoBehaviour {
         //3. 글로벌 & 스테이트 업데이트
         UpdateInput();
         //insert code here...
+    }
+
+    private void Update() {
+        
+
+        LeftMouseClick();
+    }
+
+    void LeftMouseClick()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            shootArrow.Arrow();
+        }
     }
 
     //땅에 닿았는지 여부를 확인하고 landed를 설정해주는 함수
