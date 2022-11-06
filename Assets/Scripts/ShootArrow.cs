@@ -18,7 +18,6 @@ public class ShootArrow : MonoBehaviour
 
     public void Update()
     {
-        Debug.Log(transform.Find("ArrowPos"));
         arrowPos = transform.Find("ArrowPos").gameObject.transform.position;
     }
 

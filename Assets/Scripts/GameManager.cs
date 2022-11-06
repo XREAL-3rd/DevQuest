@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public Arrow Arrow;
+    public ShootArrow ShootArrow;
+    public GameObject Cover;
     private GameObject player;
 
     private void Awake()
@@ -17,7 +20,6 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-
         DontDestroyOnLoad(this);
     }
 
@@ -25,6 +27,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
+    }
+
+    public void OnClickStartButton()
+    {
+        Cover.SetActive(false);
     }
 
     // Update is called once per frame

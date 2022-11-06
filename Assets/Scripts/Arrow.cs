@@ -15,12 +15,15 @@ public class Arrow : MonoBehaviour
 
     private void Start()
     {
-       
     }
 
     private void Update()
     {
         rb.MovePosition(rb.position + dir * Time.deltaTime * speed);
+    }
+
+    public void setArrow()
+    {
     }
 
     public void setDir(Vector3 v)
