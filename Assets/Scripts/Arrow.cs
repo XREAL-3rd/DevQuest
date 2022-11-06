@@ -34,7 +34,9 @@ public class Arrow : MonoBehaviour
         {
             //rb.isKinematic = true;
             //collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            speed = 0;
+            //rb.MovePosition(collision.gameObject.GetComponent<Rigidbody>().position);
+            rb.position = collision.gameObject.GetComponent<Rigidbody>().position;
+            //speed = -speed;
         }
     }
 }
