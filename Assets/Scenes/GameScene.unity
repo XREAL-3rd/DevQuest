@@ -6518,8 +6518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa370c508fd3ff458a12a6d31f24438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Arrow: {fileID: 0}
-  ShootArrow: {fileID: 0}
+  PlayerControl: {fileID: 2749362624247797069}
   Cover: {fileID: 1162818576}
 --- !u!1001 &1263476617510820076
 PrefabInstance:
@@ -11618,7 +11617,7 @@ MonoBehaviour:
   shootArrow: {fileID: 2749362624247797111}
   state: 0
   nextState: 0
-  animator: {fileID: 0}
+  animator: {fileID: 714577803}
   landed: 0
   moving: 0
   rotation: {x: 0, y: 0, z: 0, w: 1}

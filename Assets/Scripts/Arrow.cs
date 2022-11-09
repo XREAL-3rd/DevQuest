@@ -10,7 +10,7 @@ public class Arrow : MonoBehaviour
 
     private void Awake()
     {
-        rb = transform.Find("ArrowCube").gameObject.GetComponent<Rigidbody>();
+        setArrow();
     }
 
     private void Start()
@@ -24,6 +24,8 @@ public class Arrow : MonoBehaviour
 
     public void setArrow()
     {
+        rb = transform.Find("ArrowCube").gameObject.GetComponent<Rigidbody>();
+
     }
 
     public void setDir(Vector3 v)

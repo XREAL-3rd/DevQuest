@@ -103,7 +103,7 @@ public class PlayerControl : MonoBehaviour {
         LeftMouseClick();
     }
 
-    void LeftMouseClick()
+    public void LeftMouseClick()
     {
         if (Input.GetMouseButtonDown(0))
         {
